@@ -1,6 +1,6 @@
 package Models;
 
-public class Currency {
+public class StockMarket {
 
     //TODO
     /// Attributes
@@ -12,8 +12,5 @@ public class Currency {
 
 
 
-
-
     /// toString
-
 }
