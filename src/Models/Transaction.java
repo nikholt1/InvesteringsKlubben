@@ -11,6 +11,7 @@ public class Transaction {
     private Currency currency;
     private boolean order_type;
     private int quantity;
+    private String trying; //skal ikke bruges
 
 
     public Transaction(int id, User userId, String ticker, LocalDate localDate, double price, Currency currency, boolean order_type, int quantity) {

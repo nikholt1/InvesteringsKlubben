@@ -8,10 +8,11 @@ public class Stockmarked {
     private String sector;
     private double price;
     private Currency currency;
-    private String rating
+    private String rating;
     private double dividend_yield;
     private String market;
     private LocalDateTime LastUpdate;
+    private String trying; //skal ikke bruges
 
 
     public Stockmarked(String ticker, String name, String sector, double price, Currency currency, String rating, double dividend_yield, String market, LocalDateTime lastUpdate) {

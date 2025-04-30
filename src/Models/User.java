@@ -12,6 +12,7 @@ public class User {
     private double initCash;
     private LocalDate createdAt;
     private LocalDate updateded;
+    private String trying; //skal ikke bruges
 
 
     public User(int userID, String fullName, String email, LocalDate birthDate, double initCash, LocalDate createdAt, LocalDate updateded) {
