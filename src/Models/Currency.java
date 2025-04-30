@@ -16,6 +16,7 @@ public class Currency {
     private double CADToDKK;
     private String base_Currency;
     private LocalDateTime LastUpdate;
+    private String test; //skal ikke bruges
 
     @Override
     public String toString() {
