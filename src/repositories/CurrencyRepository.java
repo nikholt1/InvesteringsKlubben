@@ -37,7 +37,7 @@ public class CurrencyRepository {
                 String base_currency = lineScanner.next();
                 String quote_currency = lineScanner.next();
                 double rate = Double.parseDouble(lineScanner.next());
-                LocalDate last_updated = LocalDate.parse(lineScanner.next(), formatter);
+                LocalDate last_updated = LocalDate.parse(lineScanner.next(),formatter);
 
                 currencies.add(new Currency(base_currency,quote_currency,rate,last_updated));
             }
