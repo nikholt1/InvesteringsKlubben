@@ -1,6 +1,7 @@
 package models;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class User {
 
@@ -12,6 +13,7 @@ public class User {
     private double initCash;
     private LocalDate createdAt;
     private LocalDate updateded;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     //TODO
 
 
