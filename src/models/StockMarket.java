@@ -10,13 +10,14 @@ public class StockMarket {
     private String name;
     private String sector;
     private double price;
-    private Currency currency;
+    // private Currency currency;
+    String currency;
     private String rating;
     private double dividend_yield;
     private String market;
     private LocalDate LastUpdate;
 
-    public StockMarket(String ticker, String name, String sector, double price, Currency currency, String rating, double dividend_yield, String market, LocalDate lastUpdate) {
+    public StockMarket(String ticker, String name, String sector, double price, String currency, String rating, double dividend_yield, String market, LocalDate lastUpdate) {
         this.ticker = ticker;
         this.name = name;
         this.sector = sector;
@@ -83,11 +84,11 @@ public class StockMarket {
         this.price = price;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
