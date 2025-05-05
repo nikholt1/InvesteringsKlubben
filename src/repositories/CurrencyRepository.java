@@ -1,12 +1,11 @@
 package repositories;
 
 import models.Currency;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.List;
 import java.util.Scanner;
 
 public class CurrencyRepository {
@@ -19,13 +18,12 @@ public class CurrencyRepository {
 
     //getCurrency
 
-        ArrayList<Currency> currencies;
+        private List<Currency> currencies;
         
         public CurrencyRepository() {
             this.currencies = new ArrayList<>();
             readList();
         }
-
 
         public void readList() {
         try {
@@ -43,11 +41,26 @@ public class CurrencyRepository {
             }
             reader.close();
         } catch (IOException e) {
-            System.out.println("Could not find file");
+            System.out.println("Systemet kunne ikke finde Valuta-filen");
         }
     }
 
+    //getCurrency()
+    public Currency findCurrency (String base_currency) {
+        Currency result = null;
+        for (Currency Currency : currencies) {
+            if(Currency.getBase_currency().equals(base_currency)) {
+                result = Currency;
+            }
+        }
+        if (result == null) {
+            System.out.println("Systemet kunne ikke finde valuta");
+        }
+        return result;
+    }
 
-
+    public List<Currency> getCurrencies() {
+        return currencies;
+    }
 
 }
