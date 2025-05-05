@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class UserRepository {
 
-    private List<User> users;
+    private  List<User> users;
     private final String PATH = "src/repositories/users.csv";
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     //TODO
@@ -27,6 +27,7 @@ public class UserRepository {
 
     // readFile()
     public void readFile() {
+        users.clear();
         try {
             Scanner reader = new Scanner(new File(PATH));
             while (reader.hasNextLine()) {
@@ -49,40 +50,85 @@ public class UserRepository {
         }
     }
     // writeToFile()
-    public void writeToFile(String name, String email, LocalDate birthDate) {
+    public void writeNewUserToFile(String name, String email, double initCash, String birthDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         try {
-            Writer writer = new FileWriter(new File(PATH), true);
-            readFile();
-            int newID = 0;
+            Writer writer = new FileWriter(new File(PATH), true); // append mode
+            int ID = 0;
             for (User user : users) {
-                newID++;
+                ID++;
             }
-            LocalDate updated = LocalDate.now();
+            int newID = ID + 1;
+
             LocalDate created = LocalDate.now();
-            String formatted = name + ";" + email + ";" + "100_000" + ";" + created + ";" + updated;
-            writer.write(formatted);
+            LocalDate updated = LocalDate.now();
+            LocalDate parsedBirthDate = LocalDate.parse(birthDate, formatter);
+
+            String formattedBirthDate = parsedBirthDate.format(formatter);
+            String formattedCreated = created.format(formatter);
+            String formattedUpdated = updated.format(formatter);
+
+            String formattedLine = newID + ";" + name + ";" + email + ";" +
+                    formattedBirthDate + ";" + initCash + ";" +
+                    formattedCreated + ";" + formattedUpdated + "\n";
+            writer.write(formattedLine);
             writer.close();
+            readFile();
 
         } catch (IOException e) {
             System.out.println("File not found");
             e.printStackTrace();
         }
     }
-    //getUser()
-    public User findUserMyEmail(String email) {
-        User result = null;
-        for (User user : users) {
-            if(user.getEmail().equals(email)) {
-                result = user;
 
+
+    public void updateUserCashData(int userID, int value) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        for (User user : users) {
+            if (user.getUserID() == userID) {
+                user.setInitCash(value);
+                user.setUpdateded(LocalDate.now());
             }
         }
-        if (result == null) {
-            System.out.println("Systemet kunne ikke finde den indtastede bruger.");
+        try {
+            FileWriter writer = new FileWriter(PATH);
 
+            for (User user : users) {
+                String formatted = user.getUserID() + ";" +
+                        user.getFullName() + ";" +
+                        user.getEmail() + ";" +
+                        user.getBirthDate().format(formatter) + ";" +
+                        user.getInitCash() + ";" +
+                        user.getCreatedAt().format(formatter) + ";" +
+                        user.getUpdateded().format(formatter) + "\n";
+                writer.write(formatted);
+            }
+
+            writer.close();
+            readFile();
+        } catch (IOException e) {
+            System.out.println("File not found or could not be written to");
+            e.printStackTrace();
         }
-        return result;
     }
+
+    //getUser()
+//    public User findUserMyEmail(String email) {
+//        User result = null;
+//        for (User user : users) {
+//            if(user.getEmail().equals(email)) {
+//                result = user;
+//
+//            }
+//        }
+//        if (result == null) {
+//            System.out.println("Systemet kunne ikke finde den indtastede bruger.");
+//
+//        }
+//        return result;
+//    }
 
 
 
