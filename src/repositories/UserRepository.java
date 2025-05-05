@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +16,7 @@ public class UserRepository {
 
     private List<User> users;
     private final String PATH = "src/repositories/users.csv";
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     //TODO
 
     public UserRepository() {
@@ -34,10 +36,10 @@ public class UserRepository {
                 int userID = Integer.parseInt(lineScanner.next());
                 String fullName = lineScanner.next();
                 String email = lineScanner.next();
-                LocalDate birthDate = LocalDate.parse(lineScanner.next());
+                LocalDate birthDate = LocalDate.parse(lineScanner.next(), formatter);
                 double initialCash = Double.parseDouble(lineScanner.next());
-                LocalDate createdAt = LocalDate.parse(lineScanner.next());
-                LocalDate lastUpdated = LocalDate.parse(lineScanner.next());
+                LocalDate createdAt = LocalDate.parse(lineScanner.next(), formatter);
+                LocalDate lastUpdated = LocalDate.parse(lineScanner.next(), formatter);
                 users.add(new User(userID, fullName, email, birthDate, initialCash, createdAt, lastUpdated));
             }
             reader.close();
