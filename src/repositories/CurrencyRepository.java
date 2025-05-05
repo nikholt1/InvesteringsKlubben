@@ -4,6 +4,7 @@ import models.Currency;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,6 +20,7 @@ public class CurrencyRepository {
     //getCurrency
 
         private List<Currency> currencies;
+        private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         
         public CurrencyRepository() {
             this.currencies = new ArrayList<>();
@@ -35,7 +37,7 @@ public class CurrencyRepository {
                 String base_currency = lineScanner.next();
                 String quote_currency = lineScanner.next();
                 double rate = Double.parseDouble(lineScanner.next());
-                LocalDate last_updated = LocalDate.parse(lineScanner.next());
+                LocalDate last_updated = LocalDate.parse(lineScanner.next(), formatter);
 
                 currencies.add(new Currency(base_currency,quote_currency,rate,last_updated));
             }
