@@ -3,7 +3,6 @@ package services;
 import models.StockMarket;
 import repositories.StockMarketRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StockMarketService {
@@ -15,7 +14,7 @@ public class StockMarketService {
     public StockMarketService(StockMarketRepository stockMarketRepository) {
         this.stockMarketRepository = stockMarketRepository;
         stockMarketRepository.readList();
-        stockMarkets = stockMarketRepository.getStockMarket();
+        stockMarkets = stockMarketRepository.getStockMarkets();
     }
 
 

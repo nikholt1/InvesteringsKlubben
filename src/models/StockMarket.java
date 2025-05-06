@@ -1,6 +1,7 @@
 package models;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class StockMarket {
 
@@ -15,9 +16,10 @@ public class StockMarket {
     private String rating;
     private double dividend_yield;
     private String market;
-    private LocalDate LastUpdate;
+    private LocalDate lastUpdate;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public StockMarket(String ticker, String name, String sector, double price, String currency, String rating, double dividend_yield, String market, LocalDate lastUpdate) {
+    public StockMarket(String ticker, String name, String sector, double price, String currency, String rating, double dividend_yield, String market, String lastUpdate) {
         this.ticker = ticker;
         this.name = name;
         this.sector = sector;
@@ -26,7 +28,7 @@ public class StockMarket {
         this.rating = rating;
         this.dividend_yield = dividend_yield;
         this.market = market;
-        LastUpdate = lastUpdate;
+        this.lastUpdate = LocalDate.parse(lastUpdate, formatter);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class StockMarket {
                 ", rating='" + rating + '\'' +
                 ", dividend_yield=" + dividend_yield +
                 ", market='" + market + '\'' +
-                ", LastUpdate=" + LastUpdate +
+                ", LastUpdate=" + lastUpdate +
                 '}';
     }
 
@@ -117,11 +119,11 @@ public class StockMarket {
     }
 
     public LocalDate getLastUpdate() {
-        return LastUpdate;
+        return lastUpdate;
     }
 
     public void setLastUpdate(LocalDate lastUpdate) {
-        LastUpdate = lastUpdate;
+        this.lastUpdate = lastUpdate;
     }
 /// Constructor
 
