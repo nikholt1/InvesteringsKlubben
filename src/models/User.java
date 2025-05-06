@@ -17,14 +17,14 @@ public class User {
     //TODO
 
 
-    public User(int userID, String fullName, String email, LocalDate birthDate, double initCash, LocalDate createdAt, LocalDate updateded) {
+    public User(int userID, String fullName, String email, String birthDate, double initCash, String createdAt, String updateded) {
         this.userID = userID;
         this.fullName = fullName;
         this.email = email;
-        this.birthDate = birthDate;
+        this.birthDate = LocalDate.parse(birthDate, formatter);
         this.initCash = initCash;
-        this.createdAt = createdAt;
-        this.updateded = updateded;
+        this.createdAt = LocalDate.parse(createdAt, formatter);
+        this.updateded = LocalDate.parse(updateded, formatter);
     }
 
 

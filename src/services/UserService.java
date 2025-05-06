@@ -1,5 +1,7 @@
 package services;
 
+import comparators.ComparatorsortAlphabetical;
+import comparators.ComparatoruserSortByCash;
 import models.User;
 import repositories.UserRepository;
 import java.util.List;
@@ -67,13 +69,38 @@ public class UserService {
         }
     }
 
+    //getAllUsers
+    public List<User> getAllUsers() {
+        return users;
+    }
+
     // sortUsersByName() -> andmin eller alle?
     //TODO
     // make comparator for alphabetical sort
+    public boolean sortUsersByName() {
+        try {
+            users.sort(new ComparatorsortAlphabetical());
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error in sorting names");
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     // sortUsersByCash()
     //TODO
     // make comparator for numeric sort
+    public boolean sortUsersByCash() {
+        try {
+            users.sort(new ComparatoruserSortByCash());
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error in sorting by Cash Value");
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     // getUserID()
     public int getUserID(String email) {

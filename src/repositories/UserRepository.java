@@ -37,10 +37,10 @@ public class UserRepository {
                 int userID = Integer.parseInt(lineScanner.next());
                 String fullName = lineScanner.next();
                 String email = lineScanner.next();
-                LocalDate birthDate = LocalDate.parse(lineScanner.next(), formatter);
+                String birthDate = lineScanner.next();
                 double initialCash = Double.parseDouble(lineScanner.next());
-                LocalDate createdAt = LocalDate.parse(lineScanner.next(), formatter);
-                LocalDate lastUpdated = LocalDate.parse(lineScanner.next(), formatter);
+                String createdAt = lineScanner.next();
+                String lastUpdated = lineScanner.next();
                 users.add(new User(userID, fullName, email, birthDate, initialCash, createdAt, lastUpdated));
             }
             reader.close();
