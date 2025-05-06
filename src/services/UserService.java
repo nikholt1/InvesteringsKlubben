@@ -88,6 +88,44 @@ public class UserService {
         }
     }
 
+    //userDeposit()
+    public boolean userDeposit(int userID, double value) {
+        if (value < 0) {
+            System.out.println("Error in userDeposit: Value must be over 0");
+            return false;
+        }
+        try {
+            return userRepository.depositByUserID(userID, value);
+
+        } catch (Exception e) {
+            System.out.println("Error in UserService.userDeposit");
+            e.printStackTrace();
+            return false;
+        }
+
+
+    }
+
+    //userWithdraw()
+    public boolean userWithdraw(int userID, double value) {
+        if (value > 0) {
+            System.out.println("Error in userDeposit: Value must be under 0");
+            return false;
+        }
+        try {
+            return userRepository.withdrawByUserID(userID, value);
+
+        } catch (Exception e) {
+            System.out.println("Error in UserService.userWithdraw");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
+
     // sortUsersByCash()
     //TODO
     // make comparator for numeric sort
