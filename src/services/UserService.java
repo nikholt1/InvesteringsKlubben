@@ -108,7 +108,7 @@ public class UserService {
 
     //userWithdraw()
     public boolean userWithdraw(int userID, double value) {
-        if (value > 0) {
+        if (value < 0) {
             System.out.println("Error in userDeposit: Value must be under 0");
             return false;
         }
