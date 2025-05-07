@@ -43,10 +43,16 @@ public class TransactionService {
         this.userId = userId;
     }
 
+    public void buyStock(StockMarket stockMarket, int quantity) {
+
+    }
+
+    public void sellStock(StockMarket stockMarket, int quantity) {
+
+    }
+
+    /*
     public boolean writeTransactionToTransactionRepository(String ticker, String buyOrSell, int quantity) {
-        for (StockMarket sm : stockMarketService.getStockMarketRepository().getStockMarkets()) {
-            System.out.println("Loaded ticker: " + sm.getTicker());
-        }
         try {
             StockMarket chosenStockMarket = null;
             for (StockMarket stockMarket : stockMarketService.getStockMarketRepository().getStockMarkets()) {
@@ -65,6 +71,10 @@ public class TransactionService {
             return false;
         }
     }
+
+     */
+
+
 
     public void viewUserTransactionHistory() {
         double totalSpent = 0.0;
