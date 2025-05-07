@@ -21,6 +21,7 @@ public class UserRepository {
 
     public UserRepository() {
         this.users = new ArrayList<>();
+        readFile();
     }
 
     //List<User>
@@ -54,7 +55,7 @@ public class UserRepository {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         try {
-            Writer writer = new FileWriter(new File(PATH), true); // append mode
+            Writer writer = new FileWriter(PATH, true); // append mode
             int ID = 0;
             for (User user : users) {
                 ID++;
@@ -81,6 +82,88 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
+    //depositByUserID()
+    public boolean depositByUserID(int userID, double value) {
+
+        for (User user : users) {
+            if (user.getUserID() == userID) {
+                System.out.println("found " + user);
+                double userCurrentValue = user.getInitCash();
+                user.setInitCash(userCurrentValue + value);
+                System.out.println("updated user cash with" + user.getInitCash());
+                user.setUpdateded(LocalDate.now());
+                break;
+            } else {
+                System.out.println("Error in UserRepository.depositByUserID: User not found");
+                return false;
+            }
+        }
+        try {
+            Writer writer = new FileWriter(PATH);
+            for (User user : users) {
+                System.out.println(user);
+                String formatted = user.getUserID() + ";" +
+                        user.getFullName() + ";" +
+                        user.getEmail() + ";" +
+                        user.getBirthDate().format(formatter) + ";" +
+                        user.getInitCash() + ";" +
+                        user.getCreatedAt().format(formatter) + ";" +
+                        user.getUpdateded().format(formatter) + "\n";
+                writer.write(formatted);
+            }
+            writer.close();
+            readFile();
+            return true;
+        } catch (IOException e) {
+            System.out.println("Error in UserRepository.depositByUserID");
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    //withdrawByUserID()
+    public boolean withdrawByUserID(int userID, double value) {
+        for (User user : users) {
+
+            if (user.getUserID() == userID) {
+                System.out.println("found " + user + "in repository" );
+                if (user.getInitCash() < value) {
+                    System.out.println("Error in UserRepository.withdrawByUserID: not enough money");
+                    return false;
+                } else {
+                    double userCurrentValue = user.getInitCash();
+                    user.setInitCash(userCurrentValue - value);
+                    user.setUpdateded(LocalDate.now());
+                }
+
+            }
+        }
+        try {
+            Writer writer = new FileWriter(PATH);
+            for (User user : users) {
+                System.out.println(user);
+                String formatted = user.getUserID() + ";" +
+                        user.getFullName() + ";" +
+                        user.getEmail() + ";" +
+                        user.getBirthDate().format(formatter) + ";" +
+                        user.getInitCash() + ";" +
+                        user.getCreatedAt().format(formatter) + ";" +
+                        user.getUpdateded().format(formatter) + "\n";
+                writer.write(formatted);
+            }
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            System.out.println("Error in UserRepository.depositByUserID");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
 
 
     public void updateUserCashData(int userID, int value) {
