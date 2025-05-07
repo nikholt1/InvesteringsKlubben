@@ -80,11 +80,11 @@ class UserServiceTest {
     //userWithdraw()
     @Test
     void userWithdraw_test_successful_withdrawal_return_true() {
-        assertTrue(u.userWithdraw(1, -10));
+        assertTrue(u.userWithdraw(1, 10));
     }
     @Test
     void userWithdraw_test_not_enough_money_return_False() {
-        assertFalse(u.userWithdraw(1, -2_000_000));
+        assertFalse(u.userWithdraw(1, 2_000_000));
     }
 //    @Test
 //    void userWithdraw_test_invalid_value_input_negative_value_return_true() {

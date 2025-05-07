@@ -84,11 +84,15 @@ public class UserRepository {
     }
     //depositByUserID()
     public boolean depositByUserID(int userID, double value) {
+
         for (User user : users) {
             if (user.getUserID() == userID) {
+                System.out.println("found " + user);
                 double userCurrentValue = user.getInitCash();
                 user.setInitCash(userCurrentValue + value);
+                System.out.println("updated user cash with" + user.getInitCash());
                 user.setUpdateded(LocalDate.now());
+                break;
             } else {
                 System.out.println("Error in UserRepository.depositByUserID: User not found");
                 return false;
@@ -126,6 +130,8 @@ public class UserRepository {
                 System.out.println("found " + user + "in repository" );
                 if (user.getInitCash() < value) {
                     System.out.println("Error in UserRepository.withdrawByUserID: not enough money");
+                    return false;
+                } else {
                     double userCurrentValue = user.getInitCash();
                     user.setInitCash(userCurrentValue - value);
                     user.setUpdateded(LocalDate.now());
