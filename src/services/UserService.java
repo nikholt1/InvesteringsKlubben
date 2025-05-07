@@ -95,16 +95,17 @@ public class UserService {
             return false;
         }
         try {
-            return userRepository.depositByUserID(userID, value);
+            return userRepository.depositToAccout(userID, value);
 
         } catch (Exception e) {
             System.out.println("Error in UserService.userDeposit");
             e.printStackTrace();
             return false;
         }
-
-
     }
+
+
+
 
     //userWithdraw()
     public boolean userWithdraw(int userID, double value) {
@@ -113,7 +114,7 @@ public class UserService {
             return false;
         }
         try {
-            return userRepository.withdrawByUserID(userID, value);
+            return userRepository.withdrawFromAccount(userID, value);
 
         } catch (Exception e) {
             System.out.println("Error in UserService.userWithdraw");
@@ -122,7 +123,15 @@ public class UserService {
         }
     }
 
-
+    public boolean checkUserCashBalance(int userID, double value) {
+        try {
+            return userRepository.checkAccountCashBalance(userID, value);
+        } catch (Exception e) {
+            System.out.println("Error in UserService.usercheckUesrCashBalance");
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 
