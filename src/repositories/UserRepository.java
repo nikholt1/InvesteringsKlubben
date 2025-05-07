@@ -51,7 +51,7 @@ public class UserRepository {
         }
     }
     // writeToFile()
-    public void writeNewUserToFile(String name, String email, double initCash, String birthDate) {
+    public void writeNewUserToFile(String name, String email, double balance, String birthDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         try {
@@ -71,7 +71,7 @@ public class UserRepository {
             String formattedUpdated = updated.format(formatter);
 
             String formattedLine = newID + ";" + name + ";" + email + ";" +
-                    formattedBirthDate + ";" + initCash + ";" +
+                    formattedBirthDate + ";" + balance + ";" +
                     formattedCreated + ";" + formattedUpdated + "\n";
             writer.write(formattedLine);
             writer.close();
@@ -88,9 +88,9 @@ public class UserRepository {
         for (User user : users) {
             if (user.getUserID() == userID) {
                 System.out.println("found " + user);
-                double userCurrentValue = user.getInitCash();
-                user.setInitCash(userCurrentValue + value);
-                System.out.println("updated user cash with" + user.getInitCash());
+                double userCurrentValue = user.getBalance();
+                user.setBalance(userCurrentValue + value);
+                System.out.println("updated user cash with" + user.getBalance());
                 user.setUpdateded(LocalDate.now());
                 break;
             } else {
@@ -106,7 +106,7 @@ public class UserRepository {
                         user.getFullName() + ";" +
                         user.getEmail() + ";" +
                         user.getBirthDate().format(formatter) + ";" +
-                        user.getInitCash() + ";" +
+                        user.getBalance() + ";" +
                         user.getCreatedAt().format(formatter) + ";" +
                         user.getUpdateded().format(formatter) + "\n";
                 writer.write(formatted);
@@ -126,11 +126,11 @@ public class UserRepository {
     public boolean checkAccountCashBalance(int userID, double value) {
         for(User user : users) {
             if (user.getUserID() == userID) {
-                if (user.getInitCash() < value) {
+                if (user.getBalance() < value) {
                     System.out.println("Error in UserRepository.withdrawByUserID: not enough money");
                     return false;
                 } else {
-                    System.out.println(user.getInitCash() + " Acceptable value");
+                    System.out.println(user.getBalance() + " Acceptable value");
                     return true;
                 }
             }
@@ -148,9 +148,9 @@ public class UserRepository {
                     System.out.println("Error in UserRepository.withdrawByUserID: not enough money");
                     return false;
                 } else {
-                    double userCurrentValue = user.getInitCash();
-                    user.setInitCash(userCurrentValue - value);
-                    System.out.println("Account balance updated to: " + user.getInitCash());
+                    double userCurrentValue = user.getBalance();
+                    user.setBalance(userCurrentValue - value);
+                    System.out.println("Account balance updated to: " + user.getBalance());
                     user.setUpdateded(LocalDate.now());
                 }
 
@@ -164,7 +164,7 @@ public class UserRepository {
                         user.getFullName() + ";" +
                         user.getEmail() + ";" +
                         user.getBirthDate().format(formatter) + ";" +
-                        user.getInitCash() + ";" +
+                        user.getBalance() + ";" +
                         user.getCreatedAt().format(formatter) + ";" +
                         user.getUpdateded().format(formatter) + "\n";
                 writer.write(formatted);
@@ -188,7 +188,7 @@ public class UserRepository {
 
         for (User user : users) {
             if (user.getUserID() == userID) {
-                user.setInitCash(value);
+                user.setBalance(value);
                 user.setUpdateded(LocalDate.now());
             }
         }
@@ -200,7 +200,7 @@ public class UserRepository {
                         user.getFullName() + ";" +
                         user.getEmail() + ";" +
                         user.getBirthDate().format(formatter) + ";" +
-                        user.getInitCash() + ";" +
+                        user.getBalance() + ";" +
                         user.getCreatedAt().format(formatter) + ";" +
                         user.getUpdateded().format(formatter) + "\n";
                 writer.write(formatted);
