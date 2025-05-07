@@ -83,7 +83,7 @@ public class UserRepository {
         }
     }
     //depositByUserID()
-    public boolean depositByUserID(int userID, double value) {
+    public boolean depositToAccout(int userID, double value) {
 
         for (User user : users) {
             if (user.getUserID() == userID) {
@@ -101,7 +101,7 @@ public class UserRepository {
         try {
             Writer writer = new FileWriter(PATH);
             for (User user : users) {
-                System.out.println(user);
+//                System.out.println(user);
                 String formatted = user.getUserID() + ";" +
                         user.getFullName() + ";" +
                         user.getEmail() + ";" +
@@ -122,18 +122,35 @@ public class UserRepository {
 
     }
 
+    //checkAccountCashBalance();
+    public boolean checkAccountCashBalance(int userID, double value) {
+        for(User user : users) {
+            if (user.getUserID() == userID) {
+                if (user.getInitCash() < value) {
+                    System.out.println("Error in UserRepository.withdrawByUserID: not enough money");
+                    return false;
+                } else {
+                    System.out.println(user.getInitCash() + " Acceptable value");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     //withdrawByUserID()
-    public boolean withdrawByUserID(int userID, double value) {
+    public boolean withdrawFromAccount(int userID, double value) {
         for (User user : users) {
 
             if (user.getUserID() == userID) {
                 System.out.println("found " + user + "in repository" );
-                if (user.getInitCash() < value) {
+                if (!checkAccountCashBalance(userID, value)) {
                     System.out.println("Error in UserRepository.withdrawByUserID: not enough money");
                     return false;
                 } else {
                     double userCurrentValue = user.getInitCash();
                     user.setInitCash(userCurrentValue - value);
+                    System.out.println("Account balance updated to: " + user.getInitCash());
                     user.setUpdateded(LocalDate.now());
                 }
 
@@ -142,7 +159,7 @@ public class UserRepository {
         try {
             Writer writer = new FileWriter(PATH);
             for (User user : users) {
-                System.out.println(user);
+//                System.out.println(user);
                 String formatted = user.getUserID() + ";" +
                         user.getFullName() + ";" +
                         user.getEmail() + ";" +
