@@ -5,6 +5,7 @@ import models.StockMarket;
 import models.Transaction;
 import repositories.StockMarketRepository;
 import repositories.TransactionRepository;
+import repositories.UserRepository;
 
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class TransactionService {
 
     private final StockMarketRepository stockMarketRepository = new StockMarketRepository();
     private StockMarketService stockMarketService = new StockMarketService(stockMarketRepository);
+    private final UserRepository userRepository = new UserRepository();
+    private UserService userService = new UserService(userRepository);
 
     private TransactionRepository transactionRepository;
     private int userId;
@@ -44,37 +47,34 @@ public class TransactionService {
     }
 
     public void buyStock(StockMarket stockMarket, int quantity) {
+        double price = stockMarket.getPrice();
+        double sum = price * quantity;
 
+        if (userService.checkUserCashBalance(userId, sum)) {
+            if (writeTransactionToTransactionRepository(stockMarket, "buy", quantity)) {
+                userService.userWithdraw(userId, sum);
+            }
+        }
     }
 
     public void sellStock(StockMarket stockMarket, int quantity) {
+        double stockValue = stockMarket.getPrice();
+        double saleValue = stockValue * quantity;
+
+
+
 
     }
 
-    /*
-    public boolean writeTransactionToTransactionRepository(String ticker, String buyOrSell, int quantity) {
+    public boolean writeTransactionToTransactionRepository(StockMarket stockMarket, String buyOrSell, int quantity) {
         try {
-            StockMarket chosenStockMarket = null;
-            for (StockMarket stockMarket : stockMarketService.getStockMarketRepository().getStockMarkets()) {
-                if (stockMarket.getTicker().equalsIgnoreCase(ticker)) {
-                    chosenStockMarket = stockMarket;
-                }
-            }
-            if (chosenStockMarket != null) {
-                transactionRepository.writeNewTransactionToFile(userId, chosenStockMarket.getTicker(), chosenStockMarket.getPrice(), buyOrSell, quantity);
-            } else {
-                return false;
-            }
+            transactionRepository.writeNewTransactionToFile(userId, stockMarket.getTicker(), stockMarket.getPrice(), buyOrSell, quantity);
             return true;
         } catch (Exception e) {
             System.out.println("Error in creating transaction");
             return false;
         }
     }
-
-     */
-
-
 
     public void viewUserTransactionHistory() {
         double totalSpent = 0.0;
@@ -88,9 +88,15 @@ public class TransactionService {
         System.out.println("You have spent " + totalSpent + " since becoming a member");
     }
 
-    public void getAllTransactions() {
+    public void getUserStocks() {
         for (Transaction transaction : transactions) {
-            System.out.println(transaction);
+            if (transaction.getUserId() == userId) {
+
+            }
         }
+    }
+
+    public List<Transaction> getAllTransactions() {
+       return transactionRepository.getTransactions();
     }
 }
