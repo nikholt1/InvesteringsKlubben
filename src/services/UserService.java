@@ -48,12 +48,12 @@ public class UserService {
 
     }
 
-    public boolean writeNewUser(String name, String email, double initCash, String birthdate) {
-        if (initCash < 10_000) {
+    public boolean writeNewUser(String name, String email, double balance, String birthdate) {
+        if (balance < 10_000) {
             return false;
         }
         try {
-            userRepository.writeNewUserToFile(name, email, initCash, birthdate);
+            userRepository.writeNewUserToFile(name, email, balance, birthdate);
             users = userRepository.getUsers();
             return true;
         } catch (Exception e) {
