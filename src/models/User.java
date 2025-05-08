@@ -10,7 +10,7 @@ public class User {
     private String fullName;
     private String email;
     private LocalDate birthDate;
-    private double initCash;
+    private double balance;
     private LocalDate createdAt;
     private LocalDate updateded;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -22,7 +22,7 @@ public class User {
         this.fullName = fullName;
         this.email = email;
         this.birthDate = LocalDate.parse(birthDate, formatter);
-        this.initCash = initCash;
+        this.balance = initCash;
         this.createdAt = LocalDate.parse(createdAt, formatter);
         this.updateded = LocalDate.parse(updateded, formatter);
     }
@@ -35,7 +35,7 @@ public class User {
                 ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", birthDate=" + birthDate +
-                ", initCash=" + initCash +
+                ", initCash=" + balance +
                 ", createdAt=" + createdAt +
                 ", updateded=" + updateded +
                 '}';
@@ -73,12 +73,12 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public double getInitCash() {
-        return initCash;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setInitCash(double initCash) {
-        this.initCash = initCash;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public LocalDate getCreatedAt() {
