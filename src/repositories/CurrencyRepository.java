@@ -36,14 +36,14 @@ public class CurrencyRepository {
                 lineScanner.useDelimiter(";");
                 String base_currency = lineScanner.next();
                 String quote_currency = lineScanner.next();
-                double rate = Double.parseDouble(lineScanner.next());
+                double rate = Double.parseDouble(lineScanner.next().replace(',', '.'));
                 LocalDate last_updated = LocalDate.parse(lineScanner.next(),formatter);
 
                 currencies.add(new Currency(base_currency,quote_currency,rate,last_updated));
             }
             reader.close();
         } catch (IOException e) {
-            System.out.println("Systemet kunne ikke finde Valuta-filen");
+            System.out.println("CurrencyRepository.readlist().Systemet kunne ikke finde Valuta-filen");
         }
     }
 
@@ -56,7 +56,7 @@ public class CurrencyRepository {
             }
         }
         if (result == null) {
-            System.out.println("Systemet kunne ikke finde valuta");
+            System.out.println("CurrencyRepository.findCurrency().Systemet kunne ikke finde valuta");
         }
         return result;
     }
