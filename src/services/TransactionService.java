@@ -7,6 +7,7 @@ import repositories.StockMarketRepository;
 import repositories.TransactionRepository;
 import repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionService {
@@ -61,8 +62,16 @@ public class TransactionService {
         double stockValue = stockMarket.getPrice();
         double saleValue = stockValue * quantity;
 
-
-
+        if (getQuantityOfSpecificStockTiedToUser(stockMarket.getTicker()) < quantity) {
+            System.out.println("You do not have enough stocks in " + stockMarket.getTicker());
+        }
+        try {
+            if (writeTransactionToTransactionRepository(stockMarket, "sell", quantity)) {
+                userService.userDeposit(userId, saleValue);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in creating transaction");
+        }
 
     }
 
@@ -88,12 +97,27 @@ public class TransactionService {
         System.out.println("You have spent " + totalSpent + " since becoming a member");
     }
 
-    public void getUserStocks() {
+    public List<Transaction> getUserStocks() {
+        List<Transaction> userTransactions = new ArrayList<>();
+
         for (Transaction transaction : transactions) {
             if (transaction.getUserId() == userId) {
-
+                userTransactions.add(transaction);
             }
         }
+        return userTransactions;
+    }
+
+    public int getQuantityOfSpecificStockTiedToUser(String ticker) {
+        List<Transaction> userTransactions = getUserStocks();
+        int quantity = 0;
+
+        for (Transaction transaction : userTransactions) {
+            if (transaction.getTicker() == ticker) {
+                quantity += transaction.getQuantity();
+            }
+        }
+        return quantity;
     }
 
     public List<Transaction> getAllTransactions() {
