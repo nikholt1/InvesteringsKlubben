@@ -22,10 +22,7 @@ class CurrencyRepositoryTest {
 
 
 
-    @Test
-    void calculateCurrencyToDKK_test_correctReturn_return_true() {
-        assertEquals(c.calculateCurrencyDKKToCurrency(1, "EUR"), 7,45);
-    }
+
 
 
 

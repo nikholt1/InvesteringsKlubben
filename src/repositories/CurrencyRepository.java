@@ -68,32 +68,6 @@ public class CurrencyRepository {
     }
 
 
-    // currency rate calculation implementation test
-    // returner double data type af værdien i DKK
-    public double calculateCurrencyToDKK(double DKKValue, String ticker) {
-        readList();
-        double rate = 0.0;
-        for (Currency currency : currencies) {
-            if (currency.getBase_currency().equals(ticker)) {
-                rate = currency.getRate();
-                break;
-            }
-        }
-        double result = DKKValue * rate;
-        return result;
-    }
 
-
-    // returner double data type af værdien i base_currency value
-    public double calculateCurrencyDKKToCurrency(double DKKValue, String ticker) {
-        readList();
-        double rate = 0.0;
-        for (Currency currency : currencies) {
-                rate = currency.getRate();
-                break;
-        }
-        double result = DKKValue / rate;
-        return 0.0;
-    }
 
 }

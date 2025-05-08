@@ -12,11 +12,11 @@ public class CurrencyService {
     // getCurrencyRate()
     // kommunikation til controller
 
-    private CurrencyRepository CurrencyRepository;
+    private CurrencyRepository currencyRepository;
     private List<Currency> currencies;
 
     public CurrencyService(CurrencyRepository currencyRepository) {
-        this.CurrencyRepository = currencyRepository;
+        this.currencyRepository = currencyRepository;
         currencyRepository.readList();
         currencies = currencyRepository.getCurrencies();
     }
@@ -33,5 +33,33 @@ public class CurrencyService {
             System.out.println("CurrencyServise.getCurrencyRate().Systemet kunne ikke finde currencyRate");
         }
         return foundRate;
+    }
+
+    // currency rate calculation implementation test
+    // returner double data type af værdien i DKK
+    public double calculateCurrencyToDKK(double DKKValue, String ticker) {
+        currencyRepository.readList();
+        double rate = 0.0;
+        for (Currency currency : currencies) {
+            if (currency.getBase_currency().equals(ticker)) {
+                rate = currency.getRate();
+                break;
+            }
+        }
+        double result = DKKValue * rate;
+        return result;
+    }
+
+
+    // returner double data type af værdien i base_currency value
+    public double calculateCurrencyDKKToCurrency(double DKKValue, String ticker) {
+        currencyRepository.readList();
+        double rate = 0.0;
+        for (Currency currency : currencies) {
+            rate = currency.getRate();
+            break;
+        }
+        double result = DKKValue / rate;
+        return 0.0;
     }
 }
