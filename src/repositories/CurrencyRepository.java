@@ -28,6 +28,7 @@ public class CurrencyRepository {
         }
 
         public void readList() {
+            currencies.clear();
         try {
             Scanner reader = new Scanner(new File("src/repositories/currency.csv"));
             while (reader.hasNextLine()) {
@@ -36,19 +37,20 @@ public class CurrencyRepository {
                 lineScanner.useDelimiter(";");
                 String base_currency = lineScanner.next();
                 String quote_currency = lineScanner.next();
-                double rate = Double.parseDouble(lineScanner.next());
+                double rate = Double.parseDouble(lineScanner.next().replace(',', '.'));
                 LocalDate last_updated = LocalDate.parse(lineScanner.next(),formatter);
 
                 currencies.add(new Currency(base_currency,quote_currency,rate,last_updated));
             }
             reader.close();
         } catch (IOException e) {
-            System.out.println("Systemet kunne ikke finde Valuta-filen");
+            System.out.println("CurrencyRepository.readlist().Systemet kunne ikke finde Valuta-filen");
         }
     }
 
     //getCurrency()
     public Currency findCurrency (String base_currency) {
+        readList();
         Currency result = null;
         for (Currency Currency : currencies) {
             if(Currency.getBase_currency().equals(base_currency)) {
@@ -56,7 +58,7 @@ public class CurrencyRepository {
             }
         }
         if (result == null) {
-            System.out.println("Systemet kunne ikke finde valuta");
+            System.out.println("CurrencyRepository.findCurrency().Systemet kunne ikke finde valuta");
         }
         return result;
     }
@@ -64,5 +66,8 @@ public class CurrencyRepository {
     public List<Currency> getCurrencies() {
         return currencies;
     }
+
+
+
 
 }
