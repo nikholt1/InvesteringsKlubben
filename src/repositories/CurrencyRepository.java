@@ -28,6 +28,7 @@ public class CurrencyRepository {
         }
 
         public void readList() {
+            currencies.clear();
         try {
             Scanner reader = new Scanner(new File("src/repositories/currency.csv"));
             while (reader.hasNextLine()) {
@@ -49,6 +50,7 @@ public class CurrencyRepository {
 
     //getCurrency()
     public Currency findCurrency (String base_currency) {
+        readList();
         Currency result = null;
         for (Currency Currency : currencies) {
             if(Currency.getBase_currency().equals(base_currency)) {
@@ -63,6 +65,35 @@ public class CurrencyRepository {
 
     public List<Currency> getCurrencies() {
         return currencies;
+    }
+
+
+    // currency rate calculation implementation test
+    // returner double data type af værdien i DKK
+    public double calculateCurrencyToDKK(double DKKValue, String ticker) {
+        readList();
+        double rate = 0.0;
+        for (Currency currency : currencies) {
+            if (currency.getBase_currency().equals(ticker)) {
+                rate = currency.getRate();
+                break;
+            }
+        }
+        double result = DKKValue * rate;
+        return result;
+    }
+
+
+    // returner double data type af værdien i base_currency value
+    public double calculateCurrencyDKKToCurrency(double DKKValue, String ticker) {
+        readList();
+        double rate = 0.0;
+        for (Currency currency : currencies) {
+                rate = currency.getRate();
+                break;
+        }
+        double result = DKKValue / rate;
+        return 0.0;
     }
 
 }
