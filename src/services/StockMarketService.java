@@ -24,6 +24,10 @@ public class StockMarketService {
         return stockMarketRepository;
     }
 
+    public List<StockMarket> getStocks() {
+        return stockMarkets;
+    }
+
     // getTicker()
     public String getTicker(String ticker) {
         String foundTicker = " ";
