@@ -3,6 +3,7 @@ package services;
 import models.Currency;
 import models.StockMarket;
 import models.Transaction;
+import repositories.CurrencyRepository;
 import repositories.StockMarketRepository;
 import repositories.TransactionRepository;
 import repositories.UserRepository;
@@ -28,16 +29,17 @@ public class TransactionService {
     // calculateRateToDKK()
 
     // getAllTransactions();
-    private List<Transaction> transactions;
-    private List<Currency> currencies;
+    private final List<Transaction> transactions;
 
     private final StockMarketRepository stockMarketRepository = new StockMarketRepository();
-    private StockMarketService stockMarketService = new StockMarketService(stockMarketRepository);
+    private final StockMarketService stockMarketService = new StockMarketService(stockMarketRepository);
     private final UserRepository userRepository = new UserRepository();
-    private UserService userService = new UserService(userRepository);
+    private final UserService userService = new UserService(userRepository);
+    private final CurrencyRepository currencyRepository = new CurrencyRepository();
+    private final CurrencyService currencyService = new CurrencyService(currencyRepository);
 
-    private TransactionRepository transactionRepository;
-    private int userId;
+    private final TransactionRepository transactionRepository;
+    private final int userId;
 
 
     public TransactionService(TransactionRepository transactionRepository, int userId) {
@@ -47,32 +49,39 @@ public class TransactionService {
         this.userId = userId;
     }
 
-    public void buyStock(StockMarket stockMarket, int quantity) {
+    public boolean buyStock(StockMarket stockMarket, int quantity) {
         double price = stockMarket.getPrice();
         double sum = price * quantity;
+        double convertedSum = currencyService.calculateCurrencyToDKK(sum, stockMarket.getCurrency());
 
-        if (userService.checkUserCashBalance(userId, sum)) {
+        if (userService.checkUserCashBalance(userId, convertedSum)) {
             if (writeTransactionToTransactionRepository(stockMarket, "buy", quantity)) {
-                userService.userWithdraw(userId, sum);
+                return userService.userWithdraw(userId, convertedSum);
             }
         }
+        return false;
     }
 
-    public void sellStock(StockMarket stockMarket, int quantity) {
+    public boolean sellStock(StockMarket stockMarket, int quantity) {
         double stockValue = stockMarket.getPrice();
         double saleValue = stockValue * quantity;
+        double convertedSaleValue = currencyService.calculateCurrencyToDKK(saleValue, stockMarket.getCurrency());
 
-        if (getQuantityOfSpecificStockTiedToUser(stockMarket.getTicker()) < quantity) {
+        if (getQuantityOfSpecificStockTiedToUser(stockMarket.getTicker()) <= quantity) {
             System.out.println("You do not have enough stocks in " + stockMarket.getTicker());
+            return false;
         }
+
         try {
             if (writeTransactionToTransactionRepository(stockMarket, "sell", quantity)) {
-                userService.userDeposit(userId, saleValue);
+                userService.userDeposit(userId, convertedSaleValue);
+                return true;
             }
         } catch (Exception e) {
             System.out.println("Error in creating transaction");
+            return false;
         }
-
+        return false;
     }
 
     public boolean writeTransactionToTransactionRepository(StockMarket stockMarket, String buyOrSell, int quantity) {
@@ -113,7 +122,7 @@ public class TransactionService {
         int quantity = 0;
 
         for (Transaction transaction : userTransactions) {
-            if (transaction.getTicker() == ticker) {
+            if (transaction.getTicker().equals(ticker)) {
                 quantity += transaction.getQuantity();
             }
         }
