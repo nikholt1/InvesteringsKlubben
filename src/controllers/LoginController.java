@@ -1,42 +1,46 @@
 package controllers;
 
+import repositories.UserRepository;
 import services.UserService;
 import ui.AdminUI;
 import ui.LoginUI;
 
 public class LoginController {
-    LoginUI loginUI;
-    AdminController adminController;
-    UserController userController;
-    UserService userService;
+    private final LoginUI loginUI;
+    private AdminController adminController;
+    private UserController userController;
+    private UserService userService;
 
     public LoginController() {
-        this.loginUI = new LoginUI();
+        loginUI = new LoginUI(this);
     }
 
     public void start() {
         loginUI.printMenu();
-        navigateTo();
     }
 
-    public void navigateTo() {
-        if (loginUI.getIsAdmin()) {
-            // adminController.start();
-        } else {
-            // userController.start();
-            verifyLogin();
-        }
+
+
+    public void startUser(String email) {
+        userController = new UserController();
+        userController.start(email);
+    }
+    public void startAdmin() {
+        adminController = new AdminController();
+        adminController.start();
     }
 
-    public void verifyLogin() {
-        //  User user = userService.checkIfUserExists(loginUI.emailCheck());
-        /*
-        if (user != null) {
-            userController.start(User user);
+
+
+
+    public boolean verifyLogin(String email) {
+        UserRepository userRepository = new UserRepository();
+        UserService userService = new UserService(userRepository);
+        if (userService.getUserID(email) != -1) {
+            return true;
         } else {
-            sout: "Could not find user";
+            return false;
         }
-         */
     }
 
 

@@ -1,12 +1,20 @@
 package ui;
 
+import controllers.LoginController;
 import utilites.HandleIntInput;
 import java.util.Scanner;
 
 public class LoginUI {
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
     private boolean isAdmin;
+    private boolean isUser;
     private boolean isRunning = true;
+    private LoginController loginController;
+
+    public LoginUI(LoginController loginController) {
+        this.loginController = loginController;
+     }
+
 
     public void printMenu() {
         System.out.println("""
@@ -25,7 +33,15 @@ public class LoginUI {
     public void handleMenuChoice() {
         while (isRunning) {
             int choice = HandleIntInput.handleUserInput(scanner);
-            isAdmin = isAdmin(choice);
+            if (choice == 1) {
+                String email = emailCheck();
+                if (loginController.verifyLogin(email)) {
+                    loginController.startUser(email);
+                }
+            } else if (choice == 2) {
+                loginController.startAdmin();
+            }
+
         }
     }
 

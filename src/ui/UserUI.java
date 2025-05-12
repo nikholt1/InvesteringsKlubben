@@ -16,6 +16,10 @@ public class UserUI {
     private UserController userController;
 
 
+    public UserUI(UserController userController) {
+        this.userController = userController;
+    }
+
     // controller logic? skal vi have én instantiation i main, og parse objects ned.
     // eller, lave "new" instantiation af flere objekter igennem programmet.
 //    public UserUI(int userID) {

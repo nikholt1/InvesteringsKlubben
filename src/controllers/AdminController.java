@@ -41,7 +41,7 @@ public class AdminController {
 
         this.stockMarketService = new StockMarketService(stockMarketRepository);
         this.currencyService = new CurrencyService(currencyRepository);
-        this.transactionService = new TransactionService(); // mangler implementering
+//        this.transactionService = new TransactionService(transactionRepository); // mangler implementering
         this.userService = new UserService(userRepository);
 
         this.adminUI = new AdminUI();
