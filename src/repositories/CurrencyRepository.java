@@ -19,10 +19,12 @@ public class CurrencyRepository {
 
     //getCurrency
 
-        private List<Currency> currencies;
-        private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        
-        public CurrencyRepository() {
+    private List<Currency> currencies;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private final String PATH = "src/repositories/currency.csv";
+
+
+    public CurrencyRepository() {
             this.currencies = new ArrayList<>();
             readList();
         }
@@ -30,7 +32,12 @@ public class CurrencyRepository {
         public void readList() {
             currencies.clear();
         try {
-            Scanner reader = new Scanner(new File("src/repositories/currency.csv"));
+            Scanner reader = new Scanner(new File(PATH));
+            // Skips the header describing the format
+            if (reader.hasNextLine()) {
+                reader.nextLine();
+            }
+
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 Scanner lineScanner = new Scanner(line);

@@ -1,24 +1,27 @@
 package models;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
 
     //TODO
     private int id;
-    private User userId;
+    private int userId;
     private LocalDate localDate;
     private String ticker;
     private double price;
-    private Currency currency;
-    private boolean order_type;
+    private String currency;
+    private String order_type;
     private int quantity;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
 
-    public Transaction(int id, User userId, LocalDate localDate, String ticker, double price, Currency currency, boolean order_type, int quantity) {
+
+    public Transaction(int id, int userId, String localDate, String ticker, double price, String currency, String order_type, int quantity) {
         this.id = id;
         this.userId = userId;
-        this.localDate = localDate;
+        this.localDate = LocalDate.parse(localDate, formatter);
         this.ticker = ticker;
         this.price = price;
         this.currency = currency;
@@ -57,11 +60,11 @@ public class Transaction {
         this.localDate = localDate;
     }
 
-    public User getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -81,19 +84,19 @@ public class Transaction {
         this.price = price;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
-    public boolean isOrder_type() {
+    public String isOrder_type() {
         return order_type;
     }
 
-    public void setOrder_type(boolean order_type) {
+    public void setOrder_type(String order_type) {
         this.order_type = order_type;
     }
 
@@ -104,17 +107,4 @@ public class Transaction {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    /// Attributes
-
-    /// Constructor
-
-
-    /// Getters
-
-
-    /// Setters
-
-
-    /// toString
 }
