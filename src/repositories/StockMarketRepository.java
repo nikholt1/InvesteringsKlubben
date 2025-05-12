@@ -5,6 +5,7 @@ import models.StockMarket;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,28 +15,40 @@ public class StockMarketRepository {
 
     // list<StockMarket>
 
-    List<StockMarket> stockMarket;
+    List<StockMarket> stockMarkets;
+    private final String PATH = "src/repositories/stockMarket.csv";
 
     //readFile()
 
+    public StockMarketRepository() {
+        this.stockMarkets = new ArrayList<>();
+        readList();
+    }
+
     public void readList() {
+        stockMarkets.clear();
         try {
-            Scanner reader = new Scanner(new File("stockkMarket.csv"));
-            while (reader.hasNextInt()) {
+            Scanner reader = new Scanner(new File(PATH));
+            // Skips the header describing the format
+            if (reader.hasNextLine()) {
+                reader.nextLine();
+            }
+            while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 Scanner lineScanner = new Scanner(line);
                 lineScanner.useDelimiter(";");
-                String ticker = lineScanner.nextLine();
-                String name = lineScanner.nextLine();
-                String sector = lineScanner.nextLine();
-                double price = lineScanner.nextDouble();
-                String currency = lineScanner.nextLine();
-                String rating = lineScanner.nextLine();
-                double dividend_yield = lineScanner.nextDouble();
-                String market = lineScanner.nextLine();
-                LocalDate lastUpdated = LocalDate.parse(lineScanner.nextLine());
 
-                stockMarket.add(new StockMarket(ticker, name, sector, price, currency, rating, dividend_yield, market, lastUpdated));
+                String ticker = lineScanner.next();
+                String name = lineScanner.next();
+                String sector = lineScanner.next();
+                double price = Double.parseDouble(lineScanner.next().replace(',', '.'));
+                String currency = lineScanner.next();
+                String rating = lineScanner.next();
+                double dividend_yield = Double.parseDouble(lineScanner.next().replace(',', '.'));
+                String market = lineScanner.next();
+                String lastUpdate = lineScanner.next();
+
+                stockMarkets.add(new StockMarket(ticker, name, sector, price, currency, rating, dividend_yield, market, lastUpdate));
 
             }
             reader.close();
@@ -44,8 +57,8 @@ public class StockMarketRepository {
         }
     }
     //getStockMarket()
-    public List<StockMarket> getStockMarket() {
-        return stockMarket;
+    public List<StockMarket> getStockMarkets() {
+        return stockMarkets;
     }
 
 }
