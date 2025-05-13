@@ -29,6 +29,20 @@ public class UserService {
         return null;
     }
 
+
+    public User findUserByID(int userID) {
+        int count = 0;
+        for (User user : users) {
+            if (count == userID) {
+                System.out.println(user);
+                return user;
+            }
+            count++;
+        }
+        System.out.println("User not found");
+        return null;
+    }
+
     // writeNewUserData() -> Admin
     public boolean updateUserCashValue(String email, int value) {
         try {

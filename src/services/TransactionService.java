@@ -1,8 +1,10 @@
 package services;
 
+import comparators.ComparatoruserSortByCash;
 import models.Currency;
 import models.StockMarket;
 import models.Transaction;
+import models.User;
 import repositories.CurrencyRepository;
 import repositories.StockMarketRepository;
 import repositories.TransactionRepository;
@@ -116,6 +118,66 @@ public class TransactionService {
         }
         return userTransactions;
     }
+
+        /*
+    Klubbens lederskal:
+•Kunne se en samlet oversigt over alle brugeres porteføljeværdi
+•Kunne få præsenteret en rangliste over hvem der klarer sig bedst
+•Få vist fordelinger på aktier og sektorer
+    */
+
+    //getAllUsersPortfolioData() •Kunne se en samlet oversigt over alle brugeres porteføljeværdi
+    public List<User> getAllUserPortfolioData() {
+        List<User> updatedPortfolioList = new ArrayList<>();
+        List<User> AllUsers = userService.getAllUsers();
+        int userID = 0;
+        for (User user : AllUsers) {
+            userID++;
+            updatedPortfolioList.add(getUsersDataAndUpdatePortfolioData(userID));
+        }
+        return updatedPortfolioList;
+    }
+
+    //getUsersDataAndUpdatePortfolioData()
+    public User getUsersDataAndUpdatePortfolioData(int userID) {
+        User user = userService.findUserByID(userID);
+        List<Transaction> usersTransactions = getUserStocks();
+        double transactionsSum = 0.0;
+        for (Transaction transaction : usersTransactions) {
+            int QTY = transaction.getQuantity();
+            String ticker = transaction.getTicker();
+            StockMarket stock = stockMarketService.getSpecificStock(ticker);
+            double priceOverQTY = stock.getPrice() * QTY;
+            double userBalance = user.getBalance();
+            user.setBalance(userBalance += priceOverQTY);
+        }
+        return user;
+    }
+
+    //getRankedUserByPortfolioBaseList() •Kunne få præsenteret en rangliste over hvem der klarer sig bedst
+    public List<User> getRankedUserByPortfolioBaseList() {
+        List<User> updatedPortfolioList = getAllUserPortfolioData();
+        updatedPortfolioList.sort(new ComparatoruserSortByCash());
+        return updatedPortfolioList;
+    }
+
+    //getStocksAndSectorsDistribution()
+    //•Få vist fordelinger på aktier og sektorer
+    public List<String> getStocksAndSectorsDistribution() {
+        List<String> stockDistribution = new ArrayList<>();
+        List<StockMarket> stocks = stockMarketService.getStocks();
+
+
+        return null;
+    }
+
+
+
+
+
+
+
+
 
     public int getQuantityOfSpecificStockTiedToUser(String ticker) {
         List<Transaction> userTransactions = getUserStocks();
