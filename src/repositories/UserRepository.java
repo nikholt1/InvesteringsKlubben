@@ -182,13 +182,13 @@ public class UserRepository {
 
 
 
-
     public void updateUserCashData(int userID, int value) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         for (User user : users) {
             if (user.getUserID() == userID) {
-                user.setBalance(value);
+                double userCash = user.getBalance();
+                user.setBalance(userCash += value);
                 user.setUpdateded(LocalDate.now());
             }
         }

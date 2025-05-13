@@ -37,11 +37,11 @@ public class CurrencyService {
 
     // currency rate calculation implementation test
     // returner double data type af værdien i DKK
-    public double calculateCurrencyToDKK(double DKKValue, String ticker) {
+    public double calculateCurrencyToDKK(double DKKValue, String base_currency) {
         currencyRepository.readList();
         double rate = 0.0;
         for (Currency currency : currencies) {
-            if (currency.getBase_currency().equals(ticker)) {
+            if (currency.getBase_currency().equals(base_currency)) {
                 rate = currency.getRate();
                 break;
             }
@@ -52,7 +52,7 @@ public class CurrencyService {
 
 
     // returner double data type af værdien i base_currency value
-    public double calculateCurrencyDKKToCurrency(double DKKValue, String ticker) {
+    public double calculateCurrencyDKKToCurrency(double DKKValue, String base_currency) {
         currencyRepository.readList();
         double rate = 0.0;
         for (Currency currency : currencies) {
