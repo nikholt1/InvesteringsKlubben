@@ -165,10 +165,19 @@ public class TransactionService {
     //•Få vist fordelinger på aktier og sektorer
     public List<String> getStocksAndSectorsDistribution() {
         List<String> stockDistribution = new ArrayList<>();
-        List<StockMarket> stocks = stockMarketService.getStocks();
 
-
-        return null;
+        for (Transaction transaction : transactions) {
+            if (transaction.getOrder_type().equals("buy")) {
+                int QTY = transaction.getQuantity();
+                StockMarket stock = stockMarketService.getSpecificStock(transaction.getTicker());
+                stockDistribution.add(stock.getTicker() + stock.getName() + stock.getSector() + String.valueOf(QTY));
+            } else if (transaction.getOrder_type().equals("sell")) {
+                int QTY = transaction.getQuantity();
+                StockMarket stock = stockMarketService.getSpecificStock(transaction.getTicker());
+                stockDistribution.add(stock.getTicker() + stock.getName() + stock.getSector() + String.valueOf(QTY));
+            }
+        }
+        return stockDistribution;
     }
 
 
