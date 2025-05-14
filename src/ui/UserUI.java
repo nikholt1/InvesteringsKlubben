@@ -110,47 +110,6 @@ public class UserUI {
         return true;
     }
 
-    /*
-    private void viewTransactionHistory() {
-        List<Transaction> transactions = userController.getUserStocks();
-        System.out.println("""       
-                          --------------------
-                         |    KØBSHISTORIK    |
-                          --------------------
-                    """);
-
-        for (Transaction transaction : transactions) {
-            // "\u001B[31m" // RED
-            //   // RESET
-            // "\u001B[32m" // GREEN
-            String orderType;
-            String fullPriceAsString;
-            if (transaction.getOrder_type().equals("buy")) {
-                orderType = "Køb";
-                fullPriceAsString = ANSI_RED + transaction.getFullPrice() + ANSI_RESET;
-            } else {
-                orderType = "Salg";
-                fullPriceAsString = ANSI_GREEN + transaction.getFullPrice() + ANSI_RESET;
-            }
-
-            System.out.printf("""    
-                    
-                          |    %s   |
-
-                    Ordre ID:   %d
-                    Købsdato:   %s
-                    Aktie:      %s
-                    Kurs:       %.2f
-                    Antal:      %d
-                    
-                    Samlet %ssværdi:    %s
-                  
-                    """, orderType , transaction.getId(), transaction.getLocalDate(), transaction.getTicker(), transaction.getPrice(), transaction.getQuantity(), orderType, fullPriceAsString);
-        }
-    }
-
-     */
-
     private void viewTransactionHistory() {
         List<Transaction> transactions = userController.getUserStocks();
 
@@ -200,8 +159,33 @@ public class UserUI {
 
     public void viewStockMarket() {
         List<StockMarket> stocks = userController.getStocks();
-        for (StockMarket stockMarket : stocks) {
-            System.out.println(stockMarket);
+
+        System.out.println("""       
+                                                             ---------------------
+                                                            |   Markedsoversigt   |
+                                                             ---------------------
+                    """);
+        // ticker;name;sector;price;currency;rating;dividend_yield;market;last_updated
+        // HEADER
+        System.out.printf("| %-8s | %-22s | %-14s | %-10s | %-6s | %-10s | %-8s | %-18s | %-16s |\n",
+                "Aktie", "Navn", "Sektor", "Pris", "Valuta", "Bedømmelse", "Dividend", "Market", "Sidst Opdateret");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------");
+
+        for (StockMarket stock : stocks) {
+
+
+            System.out.printf("\n| %-8s | %-22s | %-14s | %-10.2f | %-6s | %-10s | %-8.2f | %-18s | %-16s |\n",
+                    stock.getTicker(),
+                    stock.getName(),
+                    stock.getSector(),
+                    stock.getPrice(),
+                    stock.getCurrency(),
+                    stock.getRating(),
+                    stock.getDividend_yield(),
+                    stock.getMarket(),
+                    stock.getLastUpdate()
+            );
+            System.out.println("\n--------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
