@@ -130,6 +130,8 @@ public class TransactionService {
         return userTransactions;
     }
 
+
+
         /*
     Klubbens lederskal:
 •Kunne se en samlet oversigt over alle brugeres porteføljeværdi

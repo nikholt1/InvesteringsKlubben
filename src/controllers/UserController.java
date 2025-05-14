@@ -92,18 +92,17 @@ public class UserController {
     // fetch transactionService Data
 
     public void buyStock(StockMarket stockMarket, int quantity) {
-//        transactionService.buyStock(stockMarket, quantity);
+        transactionService.buyStock(stockMarket, quantity);
     }
     public void sellStock(StockMarket stockMarket, int quantity) {
-//        transactionService.sellStock(stockMarket, quantity);
+        transactionService.sellStock(stockMarket, quantity);
     }
 
     public void viewUserTransactionHistory() {
 //        transactionService.viewUserTransactionHistory();
     }
     public List<Transaction> getUserStocks() {
-//        return transactionService.getUserStocks();
-        return null;
+        return transactionService.getUserStocksByID(userID-1);
     }
     public int getQuantityOfSpecificStockTiedToUser(String ticker) {
 //        return transactionService.getQuantityOfSpecificStockTiedToUser(ticker);

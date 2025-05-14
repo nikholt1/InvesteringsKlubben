@@ -3,6 +3,7 @@ package ui;
 import controllers.AdminController;
 import controllers.UserController;
 import models.StockMarket;
+import models.User;
 import utilites.HandleIntInput;
 
 import java.util.List;
@@ -30,8 +31,9 @@ public class AdminUI {
                       |    ADMIN MENU     |
                        -------------------
                 
-                1. View stock market
+                1. View stocks and sectors
                 2. View ranking
+                3. Create new user
                 9. Exit application
                 
                 Please choose an option:""");
@@ -39,8 +41,9 @@ public class AdminUI {
 
     private void handleAdminMenuChoice(int choice) {
         switch (choice) {
-            case 1 -> viewStockMarket();
+            case 1 -> viewStocksAndSectors();
             case 2 -> viewRanking();
+            case 3 -> writeNewUsers();
             case 9 -> {
                 System.out.println("Exiting... ");
                 System.exit(0);
@@ -50,14 +53,33 @@ public class AdminUI {
     }
 
 
-    public void viewStockMarket() {
-        List<StockMarket> stocks = adminController.getStocks();
-        for (StockMarket stockMarket : stocks) {
-            System.out.println(stockMarket);
+    public void viewStocksAndSectors() {
+        List<String> stocksAndSectors = adminController.getStocksAndSectorsDistribution();
+        for (String string : stocksAndSectors) {
+            System.out.println(string);
         }
     }
 
     public void viewRanking() {
-        System.out.println("Rangliste af brugers porteføljeværdi");
+        List<User> rankUserList = adminController.getRankedUserByPortfolioBaseList();
+        for (User user : rankUserList) {
+            System.out.println(user);
+        }
+    }
+
+    public void writeNewUsers() {
+        System.out.println("Skriv navn:");
+        String name = scanner.nextLine();
+        System.out.println("Skriv email");
+        String email = scanner.nextLine();
+        double balance = 100000;
+        System.out.println("Skriv fødselsdag i format DD-MM-YYYY");
+        String birthDate = scanner.nextLine();
+        boolean tjek = adminController.writeNewUsers(name,email,balance,birthDate);
+        if (tjek) {
+            System.out.println("bruger oprettet");
+        } else {
+            System.out.println("fejl prøv igen i morgen");
+        }
     }
 }
