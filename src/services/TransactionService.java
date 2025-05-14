@@ -1,8 +1,10 @@
 package services;
 
+import comparators.ComparatoruserSortByCash;
 import models.Currency;
 import models.StockMarket;
 import models.Transaction;
+import models.User;
 import repositories.CurrencyRepository;
 import repositories.StockMarketRepository;
 import repositories.TransactionRepository;
@@ -111,11 +113,151 @@ public class TransactionService {
 
         for (Transaction transaction : transactions) {
             if (transaction.getUserId() == userId) {
+                System.out.println(userId);
                 userTransactions.add(transaction);
             }
         }
         return userTransactions;
     }
+    public List<Transaction> getUserStocksByID(int userID) {
+        List<Transaction> userTransactions = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getUserId() == userID+1) {
+                userTransactions.add(transaction);
+            }
+        }
+        return userTransactions;
+    }
+
+        /*
+    Klubbens lederskal:
+•Kunne se en samlet oversigt over alle brugeres porteføljeværdi
+•Kunne få præsenteret en rangliste over hvem der klarer sig bedst
+•Få vist fordelinger på aktier og sektorer
+    */
+
+    //getAllUsersPortfolioData() •Kunne se en samlet oversigt over alle brugeres porteføljeværdi
+    public List<User> getAllUserPortfolioData() {
+        List<User> updatedPortfolioList = new ArrayList<>();
+        List<User> AllUsers = userService.getAllUsers();
+        int userID = 0;
+        for (User user : AllUsers) {
+            updatedPortfolioList.add(getUsersDataAndUpdatePortfolioData(userID));
+            userID++;
+        }
+        return updatedPortfolioList;
+    }
+
+    //getUsersDataAndUpdatePortfolioData()
+    public User getUsersDataAndUpdatePortfolioData(int userID) {
+        User user = userService.findUserByID(userID);
+        List<Transaction> usersTransactions = getUserStocksByID(userID);
+        double transactionsSum = 0.0;
+        for (Transaction transaction : usersTransactions) {
+            int QTY = transaction.getQuantity();
+            String ticker = transaction.getTicker();
+            StockMarket stock = stockMarketService.getSpecificStock(ticker);
+            double priceOverQTY = stock.getPrice() * QTY;
+            double userBalance = user.getBalance();
+            System.out.println(userBalance);
+            user.setBalance(userBalance + priceOverQTY);
+        }
+        return user;
+    }
+
+    //getRankedUserByPortfolioBaseList() •Kunne få præsenteret en rangliste over hvem der klarer sig bedst
+    public List<User> getRankedUserByPortfolioBaseList() {
+        List<User> updatedPortfolioList = getAllUserPortfolioData();
+        updatedPortfolioList.sort(new ComparatoruserSortByCash());
+        return updatedPortfolioList;
+    }
+
+    //getStocksAndSectorsDistribution()
+    //•Få vist fordelinger på aktier og sektorer
+    public List<String> getStocksAndSectorsDistribution() {
+        List<String> stockDistribution = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getOrder_type().equals("buy")) {
+                int QTY = transaction.getQuantity();
+                StockMarket stock = stockMarketService.getSpecificStock(transaction.getTicker());
+                if (stockDistribution.contains(stock.getTicker())) {
+
+                }
+                stockDistribution.add(stock.getTicker() + " " + stock.getName() + " " + stock.getSector() + " " + String.valueOf(QTY) + " " + "bought");
+            } else if (transaction.getOrder_type().equals("sell")) {
+                int QTY = transaction.getQuantity();
+                StockMarket stock = stockMarketService.getSpecificStock(transaction.getTicker());
+                stockDistribution.add(stock.getTicker() + " " + stock.getName() + " " + stock.getSector() + " " + String.valueOf(QTY) + " " + "sold");
+            }
+        }
+        return stockDistribution;
+    }
+
+    public List<String> getStocksSectorDistribution() {
+        List<StockMarket> stockMarkets = stockMarketService.getStocks();
+        List<String> stockDistribution = new ArrayList<>();
+        String sector = " ";
+        String ticker = " ";
+        int QTY = 0;
+        double sum = 0.0;
+        for (StockMarket stockMarket : stockMarkets) {
+            QTY = 0;
+            for (Transaction transaction : transactions) {
+                if (stockMarket.getTicker().equals(transaction.getTicker())) {
+                    if (transaction.getOrder_type().equals("buy")) {
+                        QTY += transaction.getQuantity();
+                    } else if (transaction.getOrder_type().equals("sell")) {
+                        QTY -= transaction.getQuantity();
+                    }
+                }
+            }
+            sum = stockMarket.getPrice() * QTY;
+            stockDistribution.add("Stock = " + stockMarket.getTicker() + " Quantity = " + QTY + " Standing volume = " + sum );
+        }
+        List<String> processedSectors = new ArrayList<>();
+        for (StockMarket stockMarket : stockMarkets) {
+            sector = stockMarket.getSector();
+            if (processedSectors.contains(sector)) {
+                continue;
+            }
+            processedSectors.add(sector);
+            QTY = 0;
+            sum = 0;
+
+
+            for (StockMarket stockMarket1 : stockMarkets) {
+                if (stockMarket1.getSector().equals(sector)) {
+                    int tickerQty = 0;
+                    for (Transaction transaction : transactions) {
+                        if (transaction.getTicker().equals(stockMarket1.getTicker())) {
+                            if (transaction.getOrder_type().equals("buy")) {
+                                tickerQty += transaction.getQuantity();
+                            } else if (transaction.getOrder_type().equals("sell")) {
+                                tickerQty -= transaction.getQuantity();
+                            }
+                        }
+                    }
+                    QTY += tickerQty;
+                    sum += stockMarket1.getPrice() * tickerQty;
+                }
+            }
+
+            stockDistribution.add("Sector: " + sector + " Quantity = " + QTY + " Standing volume = " + sum );
+        }
+        return stockDistribution;
+    }
+
+
+
+
+
+
+
+
+
+
 
     public int getQuantityOfSpecificStockTiedToUser(String ticker) {
         List<Transaction> userTransactions = getUserStocks();

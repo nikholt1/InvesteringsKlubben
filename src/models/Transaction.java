@@ -100,6 +100,10 @@ public class Transaction {
         this.order_type = order_type;
     }
 
+    public String getOrder_type() {
+        return order_type;
+    }
+
     public int getQuantity() {
         return quantity;
     }

@@ -27,6 +27,18 @@ public class StockMarketService {
         return stockMarkets;
     }
 
+    public StockMarket getSpecificStock(String ticker) {
+        StockMarket foundStock = null;
+        for (StockMarket stockMarket : stockMarkets) {
+            if (stockMarket.getTicker().equals(ticker)) {
+                foundStock = stockMarket;
+                return foundStock;
+            }
+        }
+        System.out.println("Did not find stock");
+        return null;
+    }
+
     // getTicker()
     public String getTicker(String ticker) {
         String foundTicker = " ";
