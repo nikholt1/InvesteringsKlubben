@@ -1,5 +1,6 @@
 package controllers;
 
+import models.StockMarket;
 import models.User;
 import repositories.CurrencyRepository;
 import repositories.StockMarketRepository;
@@ -44,14 +45,17 @@ public class AdminController {
 //        this.transactionService = new TransactionService(transactionRepository); // mangler implementering
         this.userService = new UserService(userRepository);
 
-        this.adminUI = new AdminUI();
+        this.adminUI = new AdminUI(this);
+
     }
 
-
+    public List<StockMarket> getStocks() {
+        return stockMarketService.getStocks();
+    }
 
     /// start method()
     public void start() {
-//           adminUI.printMenu();
+        adminUI.start();
     }
 
     /*

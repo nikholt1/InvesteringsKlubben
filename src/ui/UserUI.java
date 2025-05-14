@@ -61,7 +61,7 @@ public class UserUI {
             case 2 -> viewTransactionHistory();
             case 3 -> viewAccount();
             case 9 -> {
-                System.out.println("Exiting... Goodbye!");
+                System.out.println("Exiting... ");
                 System.exit(0);
             }
             default -> System.out.println("Please enter a valid option.");
