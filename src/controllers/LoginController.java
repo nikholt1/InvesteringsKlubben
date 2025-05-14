@@ -21,19 +21,15 @@ public class LoginController {
         loginUI.printMenu();
     }
 
-
-
     public void startUser(String email) {
         userController = new UserController();
         userController.start(email);
     }
+
     public void startAdmin() {
         adminController = new AdminController();
         adminController.start();
     }
-
-
-
 
     public boolean verifyLogin(String email) {
         UserRepository userRepository = new UserRepository();

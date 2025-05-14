@@ -42,7 +42,7 @@ public class AdminController {
 
         this.stockMarketService = new StockMarketService(stockMarketRepository);
         this.currencyService = new CurrencyService(currencyRepository);
-//        this.transactionService = new TransactionService(transactionRepository); // mangler implementering
+        this.transactionService = new TransactionService(transactionRepository,1);
         this.userService = new UserService(userRepository);
 
         this.adminUI = new AdminUI(this);
@@ -69,8 +69,8 @@ public class AdminController {
         return userService.getAllUsers();
     }
 
-    public void writeNewUsers(String name, String email, double balance, String birthDate) {
-        userService.writeNewUser(name, email, balance, birthDate);
+    public boolean writeNewUsers(String name, String email, double balance, String birthDate) {
+        return userService.writeNewUser(name, email, balance, birthDate);
                 //11;King of Mauretania;atlas@northAfrica.ly;04-08-1997;10000.0;06-05-2025;06-05-2025;
     }
 
@@ -78,6 +78,23 @@ public class AdminController {
 
 
     /// implement navigation functionality between service class and UI
+
+    public List<User> getAllUserPortfolioData() {
+        return transactionService.getAllUserPortfolioData();
+    }
+
+    public User getUsersDataAndUpdatePortfolioData(int userID) {
+        return transactionService.getUsersDataAndUpdatePortfolioData(userID);
+    }
+
+    public List<User> getRankedUserByPortfolioBaseList() {
+        return transactionService.getRankedUserByPortfolioBaseList();
+    }
+
+    public List<String> getStocksAndSectorsDistribution() {
+        return transactionService.getStocksSectorDistribution();
+    }
+
     /// switch call methods from services.
 
 
