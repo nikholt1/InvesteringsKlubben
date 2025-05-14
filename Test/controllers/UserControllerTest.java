@@ -11,11 +11,11 @@ class UserControllerTest {
     /// Integrated tests
 
     UserController c;
-
+    String email = " ";
 
     @BeforeEach
     void setUp() {
-        c = new UserController();
+        c = new UserController(email);
     }
 
     @AfterEach

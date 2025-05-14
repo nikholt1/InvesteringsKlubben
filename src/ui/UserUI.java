@@ -195,8 +195,10 @@ public class UserUI {
         System.out.println("Hvilken stock vil du gerne købe ud fra ticker: ");
         String chosenTicker = scanner.nextLine();
         StockMarket stock = userController.getSpecificStock(chosenTicker);
+        System.out.println(stock);
         System.out.println("Hvilket antal af de værdi papirer vil du gerne købe: ");
         int choiceQty = scanner.nextInt();
+        System.out.println(choiceQty);
         scanner.nextLine();
 
 
@@ -206,18 +208,18 @@ public class UserUI {
 
     public void sellStock() {
         List<Transaction> userStocks = userController.getUserStocks();
-        System.out.println("Din beholdning: ");
+        System.out.println("Dine Transaktioner: ");
         for (Transaction transaction : userStocks) {
             System.out.println(transaction);
         }
-        System.out.println("Hvilken stock vil du gerne sælge: ");
-        int choiceStock = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("Hvilken stock vil du gerne sælge ud fra ticker: ");
+        String chosenTicker = scanner.nextLine();
+        StockMarket stock = userController.getSpecificStock(chosenTicker);
         System.out.println("Hvilket antal af de værdi papirer vil du gerne sælge: ");
         int choiceQty = scanner.nextInt();
         scanner.nextLine();
 
-//        userController.sellStock();
+        userController.sellStock(stock, choiceQty);
     }
 }
 

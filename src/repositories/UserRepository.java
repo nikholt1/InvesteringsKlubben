@@ -31,6 +31,9 @@ public class UserRepository {
         users.clear();
         try {
             Scanner reader = new Scanner(new File(PATH));
+            if (reader.hasNextLine()) {
+                reader.nextLine();
+            }
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 Scanner lineScanner = new Scanner(line);
@@ -56,6 +59,7 @@ public class UserRepository {
 
         try {
             Writer writer = new FileWriter(PATH, true); // append mode
+
             int ID = 0;
             for (User user : users) {
                 ID++;
@@ -84,7 +88,9 @@ public class UserRepository {
     }
     //depositByUserID()
     public boolean depositToAccout(int userID, double value) {
-
+        readFile();
+        System.out.println(userID);
+        boolean userFound = false;
         for (User user : users) {
             if (user.getUserID() == userID) {
                 System.out.println("found " + user);
@@ -92,14 +98,17 @@ public class UserRepository {
                 user.setBalance(userCurrentValue + value);
                 System.out.println("updated user cash with" + user.getBalance());
                 user.setUpdateded(LocalDate.now());
+                userFound = true;
                 break;
-            } else {
-                System.out.println("Error in UserRepository.depositByUserID: User not found");
-                return false;
             }
+        }
+        if (!userFound) {
+            System.out.println("User not found");
+            return false;
         }
         try {
             Writer writer = new FileWriter(PATH);
+            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated");
             for (User user : users) {
 //                System.out.println(user);
                 String formatted = user.getUserID() + ";" +
@@ -158,6 +167,7 @@ public class UserRepository {
         }
         try {
             Writer writer = new FileWriter(PATH);
+            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated");
             for (User user : users) {
 //                System.out.println(user);
                 String formatted = user.getUserID() + ";" +
