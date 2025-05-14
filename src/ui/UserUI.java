@@ -191,14 +191,16 @@ public class UserUI {
 
     public void buyStock() {
 
-        System.out.println("Hvilken stock vil du gerne købe: ");
-        int choiceStock = scanner.nextInt();
-        scanner.nextLine();
+        viewStockMarket();
+        System.out.println("Hvilken stock vil du gerne købe ud fra ticker: ");
+        String chosenTicker = scanner.nextLine();
+        StockMarket stock = userController.getSpecificStock(chosenTicker);
         System.out.println("Hvilket antal af de værdi papirer vil du gerne købe: ");
         int choiceQty = scanner.nextInt();
         scanner.nextLine();
 
-//        userController.buyStock();
+
+        userController.buyStock(stock, choiceQty);
 
     }
 

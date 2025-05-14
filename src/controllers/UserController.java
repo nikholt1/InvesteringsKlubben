@@ -128,6 +128,10 @@ public class UserController {
         return stockMarketService.getStocks();
     }
 
+    public StockMarket getSpecificStock(String ticker) {
+        return stockMarketService.getSpecificStock(ticker);
+    }
+
 
 
 
