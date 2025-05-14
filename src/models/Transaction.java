@@ -44,6 +44,10 @@ public class Transaction {
                 '}';
     }
 
+    public double getFullPrice() {
+        return price * quantity;
+    }
+
     public int getId() {
         return id;
     }

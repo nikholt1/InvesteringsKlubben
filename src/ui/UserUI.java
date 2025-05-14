@@ -3,6 +3,7 @@ package ui;
 import controllers.UserController;
 import models.StockMarket;
 import models.Transaction;
+import models.User;
 import utilites.HandleIntInput;
 
 import java.util.List;
@@ -12,6 +13,11 @@ public class UserUI {
     private final Scanner scanner = new Scanner(System.in);
     private final UserController userController;
     private int userID = 1;
+
+    // These constants are used to represent negative and positive values, they color strings
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
 
     public UserUI(UserController userController) {
         this.userController = userController;
@@ -104,18 +110,91 @@ public class UserUI {
         return true;
     }
 
+    /*
+    private void viewTransactionHistory() {
+        List<Transaction> transactions = userController.getUserStocks();
+        System.out.println("""       
+                          --------------------
+                         |    KØBSHISTORIK    |
+                          --------------------
+                    """);
+
+        for (Transaction transaction : transactions) {
+            // "\u001B[31m" // RED
+            //   // RESET
+            // "\u001B[32m" // GREEN
+            String orderType;
+            String fullPriceAsString;
+            if (transaction.getOrder_type().equals("buy")) {
+                orderType = "Køb";
+                fullPriceAsString = ANSI_RED + transaction.getFullPrice() + ANSI_RESET;
+            } else {
+                orderType = "Salg";
+                fullPriceAsString = ANSI_GREEN + transaction.getFullPrice() + ANSI_RESET;
+            }
+
+            System.out.printf("""    
+                    
+                          |    %s   |
+
+                    Ordre ID:   %d
+                    Købsdato:   %s
+                    Aktie:      %s
+                    Kurs:       %.2f
+                    Antal:      %d
+                    
+                    Samlet %ssværdi:    %s
+                  
+                    """, orderType , transaction.getId(), transaction.getLocalDate(), transaction.getTicker(), transaction.getPrice(), transaction.getQuantity(), orderType, fullPriceAsString);
+        }
+    }
+
+     */
 
     private void viewTransactionHistory() {
         List<Transaction> transactions = userController.getUserStocks();
-        System.out.println("Dine transaktioner:");
+
+        System.out.println("""       
+                                            --------------------
+                                           |    KØBSHISTORIK    |
+                                            --------------------
+                    """);
+
+        // HEADER
+        System.out.printf("| %-3s | %-10s | %-8s | %-4s | %-5s | %-8s | %-12s |\n",
+                "ID", "Dato", "Aktie", "Type", "Antal", "Kurs", "Beløb");
+        System.out.println("------------------------------------------------------------------------");
+
         for (Transaction transaction : transactions) {
-            System.out.println(transaction);
+            String orderType = transaction.getOrder_type().equals("buy") ? "Køb" : "Salg";
+            String color = transaction.getOrder_type().equals("buy") ? ANSI_RED : ANSI_GREEN;
+
+            System.out.printf("\n| %-3d | %-10s | %-8s | %-4s | %-5d | %-8.2f | %s%-12s%s |\n",
+                    transaction.getId(),
+                    transaction.getLocalDate(),
+                    transaction.getTicker(),
+                    orderType,
+                    transaction.getQuantity(),
+                    transaction.getPrice(),
+                    color, transaction.getFullPrice(), ANSI_RESET
+                    );
+            System.out.println("\n------------------------------------------------------------------------");
         }
     }
 
     public void viewAccount() {
-        System.out.println("din profil:");
-        System.out.println(userController.findUserData());
+        User user = userController.findUserData();
+        System.out.printf("""
+                       ------------------
+                      |    MIN PROFIL    |
+                       ------------------
+                
+                Bruger ID:      %d
+                Navn:           %s
+                Email:          %s
+                Fødselsdato:    %s
+                \n
+                """, user.getUserID(), user.getFullName(), user.getEmail(), user.getBirthDate());
     }
 
 
