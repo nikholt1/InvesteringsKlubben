@@ -32,7 +32,6 @@ public class StockMarketService {
         for (StockMarket stockMarket : stockMarkets) {
             if (stockMarket.getTicker().equals(ticker)) {
                 foundStock = stockMarket;
-                System.out.println(foundStock);
                 return foundStock;
             }
         }
