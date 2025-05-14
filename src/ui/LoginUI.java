@@ -31,13 +31,15 @@ public class LoginUI {
     }
 
     public void handleMenuChoice() {
+
         while (isRunning) {
             int choice = HandleIntInput.handleUserInput(scanner);
             if (choice == 1) {
                 String email = emailCheck();
-                if (loginController.verifyLogin(email)) {
-                    loginController.startUser(email);
+                while (!loginController.verifyLogin(email)) {
+                    email = emailCheck();
                 }
+                loginController.startUser(email);
             } else if (choice == 2) {
                 loginController.startAdmin();
             }
