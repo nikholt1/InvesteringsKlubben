@@ -9,17 +9,24 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserUI {
-    Scanner scanner = new Scanner(System.in);
-    private boolean isMainMenuRunning = true;
-    private boolean isStockMarketRunning = true;
-    private int userID;
-    private UserController userController;
-
+    private final Scanner scanner = new Scanner(System.in);
+    private final UserController userController;
+    private int userID = 1;
 
     public UserUI(UserController userController) {
         this.userController = userController;
     }
 
+    public void start() {
+        while (true) {
+            printUserMenu();
+            int choice = HandleIntInput.handleUserInput(scanner);
+            handleUserMenuChoice(choice);
+        }
+    }
+
+    //private boolean isMainMenuRunning = true;
+    //private boolean isStockMarketRunning = true;
     // controller logic? skal vi have én instantiation i main, og parse objects ned.
     // eller, lave "new" instantiation af flere objekter igennem programmet.
 //    public UserUI(int userID) {
@@ -33,15 +40,11 @@ public class UserUI {
     - userBased transaction history
     - user account information
 
-
-
-
-
     */
     public void printUserMenu() {
         System.out.println("""
                        -------------------
-                      |        MENU       |
+                      |       MENU        |
                        -------------------
                 
                 1. View stock market
@@ -49,61 +52,35 @@ public class UserUI {
                 3. View account
                 9. Exit application
                 
-                Please choose login method:\s""");
-        handleUserMenuChoice();
+                Please choose an option:""");
     }
 
-    public void handleUserMenuChoice() {
-        while (isMainMenuRunning) {
-            int choice = HandleIntInput.handleUserInput(scanner);
-            switch (choice) {
-                case 1 -> {
-                    isMainMenuRunning = false;
-                    printStockMarketMenu();
-                }
-                case 2 -> {
-                    isMainMenuRunning = false;
-                    viewTransactionHistory();
-
-                }
-                case 3 -> {
-                    isMainMenuRunning = false;
-                    viewAccount();
-                }
-                case 9 -> System.exit(0);
-                default -> System.out.println("Please enter a valid option");
+    private void handleUserMenuChoice(int choice) {
+        switch (choice) {
+            case 1 -> runStockMarketMenu();
+            case 2 -> viewTransactionHistory();
+            case 3 -> viewAccount();
+            case 9 -> {
+                System.out.println("Exiting... ");
+                System.exit(0);
             }
+            default -> System.out.println("Please enter a valid option.");
         }
     }
 
-
-    public void viewTransactionHistory() {
-        List<Transaction> userTransactions = userController.getUserStocks();
-        System.out.println("Dine transaktioner");
-        for (Transaction transaction : userTransactions) {
-            System.out.println(transaction);
+    private void runStockMarketMenu() {
+        boolean inStockMarket = true;
+        while (inStockMarket) {
+            printStockMarketMenu();
+            int choice = HandleIntInput.handleUserInput(scanner);
+            inStockMarket = handleStockMarketChoice(choice);
         }
     }
 
-    public void viewAccount() {
-        System.out.println(userController.findUserData());
-    }
-
-
-    /*
-    // Usermuliheder:
-    stockmarket menu
-    - se stocks
-    - købe stocks
-    - sælge stocks
-    --- > måske return to main menu
-
-
-    */
-    public void printStockMarketMenu() {
+    private void printStockMarketMenu() {
         System.out.println("""
                        -------------------
-                      |    STOCK MARKET   |
+                      |   STOCK MARKET    |
                        -------------------
                 
                 1. View stocks
@@ -111,31 +88,36 @@ public class UserUI {
                 3. Sell stock
                 9. Return to main menu
                 
-                Please choose login method:\s""");
-        handleStockMarketChoice();
+                Please choose an option:""");
     }
 
-    public void handleStockMarketChoice() {
-        while (isStockMarketRunning) {
-            int choice = HandleIntInput.handleUserInput(scanner);
-            switch (choice) {
-                case 1 -> {
-                    isStockMarketRunning = false;
-                    viewStockMarket();
-                }
-                case 2 -> {
-                    isStockMarketRunning = false;
-                    buyStock();
-                }
-                case 3 -> {
-                    isStockMarketRunning = false;
-                    sellStock();
-                }
-                case 9 -> isStockMarketRunning = false;
-                default -> System.out.println("Please enter a valid option");
+    private boolean handleStockMarketChoice(int choice) {
+        switch (choice) {
+            case 1 -> viewStockMarket();
+            case 2 -> buyStock();
+            case 3 -> sellStock();
+            case 9 -> {
+                return false;
             }
+            default -> System.out.println("Please enter a valid option.");
+        }
+        return true;
+    }
+
+
+    private void viewTransactionHistory() {
+        List<Transaction> transactions = userController.getUserStocks();
+        System.out.println("Dine transaktioner:");
+        for (Transaction transaction : transactions) {
+            System.out.println(transaction);
         }
     }
+
+    public void viewAccount() {
+        System.out.println("din profil:");
+        System.out.println(userController.findUserData());
+    }
+
 
     public void viewStockMarket() {
         List<StockMarket> stocks = userController.getStocks();
@@ -143,6 +125,7 @@ public class UserUI {
             System.out.println(stockMarket);
         }
     }
+
     public void buyStock() {
 
         System.out.println("Hvilken stock vil du gerne købe: ");
@@ -171,6 +154,6 @@ public class UserUI {
 
 //        userController.sellStock();
     }
-
-
 }
+
+

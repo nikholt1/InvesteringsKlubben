@@ -68,7 +68,7 @@ public class UserController {
     public void start(String email) {
         this.userID = getUserID(email);
         user = userService.findUserData(email);
-        userUI.printUserMenu();
+        userUI.start();
     }
 
     public void start(User user) {
