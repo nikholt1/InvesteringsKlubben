@@ -35,7 +35,7 @@ public class StockMarketService {
                 return foundStock;
             }
         }
-        System.out.println("Did not find stock");
+        System.out.println("Stock not found");
         return null;
     }
 

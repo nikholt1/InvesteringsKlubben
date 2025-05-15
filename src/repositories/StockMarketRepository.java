@@ -53,7 +53,7 @@ public class StockMarketRepository {
             }
             reader.close();
         } catch (IOException e) {
-            System.out.println("Could not find file");
+            System.out.println("File not found");
         }
     }
     //getStockMarket()

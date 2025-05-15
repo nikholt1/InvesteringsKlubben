@@ -34,3 +34,5 @@ id;user_id;date;ticker;price;currency;order_type;quantity
 33;1;12-05-2025;NOVO-B;710.0;DKK;sell;10
 34;1;12-05-2025;NOVO-B;710.0;DKK;buy;10
 35;1;12-05-2025;ORSTED;456.0;DKK;sell;10
+36;1;15-05-2025;CHEMM;895.0;DKK;buy;10
+37;1;15-05-2025;CHEMM;895.0;DKK;buy;2

@@ -51,7 +51,7 @@ public class CurrencyRepository {
             }
             reader.close();
         } catch (IOException e) {
-            System.out.println("CurrencyRepository.readlist().Systemet kunne ikke finde Valuta-filen");
+            System.out.println("File not found");
         }
     }
 
@@ -65,7 +65,7 @@ public class CurrencyRepository {
             }
         }
         if (result == null) {
-            System.out.println("CurrencyRepository.findCurrency().Systemet kunne ikke finde valuta");
+            System.out.println("Currency not found");
         }
         return result;
     }

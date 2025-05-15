@@ -98,18 +98,18 @@ public class UserUI {
         List<Transaction> transactions = userController.getUserStocks();
 
         System.out.println("""       
-                                            --------------------
-                                           |    KØBSHISTORIK    |
-                                            --------------------
+                                        ---------------------------
+                                       |    TRANSACTION HISTORY    |
+                                        ---------------------------
                     """);
 
         // HEADER
-        System.out.printf("| %-3s | %-10s | %-8s | %-4s | %-5s | %-8s | %-12s |\n",
-                "ID", "Dato", "Aktie", "Type", "Antal", "Kurs", "Beløb");
+        System.out.printf("| %-3s | %-10s | %-8s | %-4s | %-6s | %-8s | %-12s |\n",
+                "ID", "Date", "Stock", "Type", "Amount", "Rate", "Value");
         System.out.println("------------------------------------------------------------------------");
 
         for (Transaction transaction : transactions) {
-            String orderType = transaction.getOrder_type().equals("buy") ? "Køb" : "Salg";
+            String orderType = transaction.getOrder_type().equals("buy") ? "Buy" : "Sell";
             String color = transaction.getOrder_type().equals("buy") ? ANSI_RED : ANSI_GREEN;
 
             System.out.printf("\n| %-3d | %-10s | %-8s | %-4s | %-5d | %-8.2f | %s%-12s%s |\n",
@@ -129,13 +129,13 @@ public class UserUI {
         User user = userController.findUserData();
         System.out.printf("""
                        ------------------
-                      |    MIN PROFIL    |
+                      |      PROFILE     |
                        ------------------
                 
-                Bruger ID:      %d
-                Navn:           %s
+                User ID:        %d
+                Name:           %s
                 Email:          %s
-                Fødselsdato:    %s
+                Date of birth:  %s
                 \n
                 """, user.getUserID(), user.getFullName(), user.getEmail(), user.getBirthDate());
     }
@@ -146,13 +146,13 @@ public class UserUI {
 
         System.out.println("""       
                                                              ---------------------
-                                                            |   Markedsoversigt   |
+                                                            |   MARKET OVERVIEW   |
                                                              ---------------------
                     """);
         // ticker;name;sector;price;currency;rating;dividend_yield;market;last_updated
         // HEADER
-        System.out.printf("| %-8s | %-22s | %-14s | %-10s | %-6s | %-10s | %-8s | %-18s | %-16s |\n",
-                "Aktie", "Navn", "Sektor", "Pris", "Valuta", "Bedømmelse", "Dividend", "Market", "Sidst Opdateret");
+        System.out.printf("| %-8s | %-22s | %-14s | %-10s | %-8s | %-8s | %-8s | %-18s | %-16s |\n",
+                "Ticker", "Name", "Sector", "Price", "Currency", "Rating", "Dividend", "Market", "Last Updated");
         System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------");
 
         for (StockMarket stock : stocks) {
@@ -176,11 +176,11 @@ public class UserUI {
     public void buyStock() {
 
         viewStockMarket();
-        System.out.println("Hvilken stock vil du gerne købe ud fra ticker: ");
+        System.out.println("Which market would you like to buy stock from? Enter here: ");
         String chosenTicker = scanner.nextLine();
         StockMarket stock = userController.getSpecificStock(chosenTicker);
         System.out.println(stock);
-        System.out.println("Hvilket antal af de værdi papirer vil du gerne købe: ");
+        System.out.println("How many stocks would you like to buy? Enter here: ");
         int choiceQty = scanner.nextInt();
         System.out.println(choiceQty);
         scanner.nextLine();
@@ -192,14 +192,14 @@ public class UserUI {
 
     public void sellStock() {
         List<Transaction> userStocks = userController.getUserStocks();
-        System.out.println("Dine Transaktioner: ");
+        System.out.println("Your stocks: ");
         for (Transaction transaction : userStocks) {
             System.out.println(transaction);
         }
-        System.out.println("Hvilken stock vil du gerne sælge ud fra ticker: ");
+        System.out.println("Which stock would you like to sell: ");
         String chosenTicker = scanner.nextLine();
         StockMarket stock = userController.getSpecificStock(chosenTicker);
-        System.out.println("Hvilket antal af de værdi papirer vil du gerne sælge: ");
+        System.out.println("What amount would you like to sell: ");
         int choiceQty = scanner.nextInt();
         scanner.nextLine();
 
