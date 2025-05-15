@@ -68,18 +68,18 @@ public class AdminUI {
     }
 
     public void writeNewUsers() {
-        System.out.println("Skriv navn:");
+        System.out.println("Enter name:");
         String name = scanner.nextLine();
-        System.out.println("Skriv email");
+        System.out.println("Enter email");
         String email = scanner.nextLine();
         double balance = 100000;
-        System.out.println("Skriv fødselsdag i format DD-MM-YYYY");
+        System.out.println("Write your birthday in this format DD-MM-YYYY");
         String birthDate = scanner.nextLine();
         boolean tjek = adminController.writeNewUsers(name,email,balance,birthDate);
         if (tjek) {
-            System.out.println("bruger oprettet");
+            System.out.println("User created");
         } else {
-            System.out.println("fejl prøv igen i morgen");
+            System.out.println("Error in creating user");
         }
     }
 }

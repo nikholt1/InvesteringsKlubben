@@ -71,7 +71,7 @@ public class UserService {
             users = userRepository.getUsers();
             return true;
         } catch (Exception e) {
-            System.out.println("Error in writeNewUser");
+            System.out.println("Error in creatin user");
             e.printStackTrace();
             return false;
         }
@@ -105,14 +105,14 @@ public class UserService {
     //userDeposit()
     public boolean userDeposit(int userID, double value) {
         if (value < 0) {
-            System.out.println("Error in userDeposit: Value must be over 0");
+            System.out.println("Error in deposit: Value must be over 0");
             return false;
         }
         try {
-            return userRepository.depositToAccout(userID, value);
+            return userRepository.depositToAccount(userID, value);
 
         } catch (Exception e) {
-            System.out.println("Error in UserService.userDeposit");
+            System.out.println("Error in deposit");
             e.printStackTrace();
             return false;
         }
@@ -124,14 +124,14 @@ public class UserService {
     //userWithdraw()
     public boolean userWithdraw(int userID, double value) {
         if (value < 0) {
-            System.out.println("Error in userDeposit: Value must be under 0");
+            System.out.println("Error in withdrawal: Value must be under 0");
             return false;
         }
         try {
             return userRepository.withdrawFromAccount(userID, value);
 
         } catch (Exception e) {
-            System.out.println("Error in UserService.userWithdraw");
+            System.out.println("Error in withdrawal");
             e.printStackTrace();
             return false;
         }
@@ -141,7 +141,7 @@ public class UserService {
         try {
             return userRepository.checkAccountCashBalance(userID, value);
         } catch (Exception e) {
-            System.out.println("Error in UserService.usercheckUesrCashBalance");
+            System.out.println("Error in fetching balance");
             e.printStackTrace();
             return false;
         }

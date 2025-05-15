@@ -85,7 +85,7 @@ public class TransactionRepository {
             writer.close();
             readList();
         } catch (IOException e) {
-            System.out.println("File not found or could not be writted to");
+            System.out.println("File not found or could not be written to");
         }
     }
 

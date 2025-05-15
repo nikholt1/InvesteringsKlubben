@@ -15,22 +15,6 @@ import java.util.List;
 
 public class TransactionService {
 
-    //TODO
-    // Format "id;user_id;date;ticker;price;currency;order_type;quantity"
-    //Transaction er dependent på StockMarket
-    // relevant information fra StockMarket er Ticker / Price / currency
-    // Constructor modtager User info i Parametre
-
-    // List<Currency> -> henter currency Rate fra CurrencyService
-    // List<StockMarked> -> henter fra StockMarketService
-
-    // findStockByNameAndGetPrice() -> altid sidst opdaterede værdi fra StockMarket liste
-
-    // calculatePriceFromRateWithQuantity()
-
-    // calculateRateToDKK()
-
-    // getAllTransactions();
     private final List<Transaction> transactions;
 
     private final StockMarketRepository stockMarketRepository = new StockMarketRepository();
@@ -129,15 +113,6 @@ public class TransactionService {
         }
         return userTransactions;
     }
-
-
-
-        /*
-    Klubbens lederskal:
-•Kunne se en samlet oversigt over alle brugeres porteføljeværdi
-•Kunne få præsenteret en rangliste over hvem der klarer sig bedst
-•Få vist fordelinger på aktier og sektorer
-    */
 
     //getAllUsersPortfolioData() •Kunne se en samlet oversigt over alle brugeres porteføljeværdi
     public List<User> getAllUserPortfolioData() {

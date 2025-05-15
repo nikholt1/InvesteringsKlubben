@@ -30,7 +30,7 @@ public class CurrencyService {
             }
         }
         if (foundRate == 0) {
-            System.out.println("CurrencyServise.getCurrencyRate().Systemet kunne ikke finde currencyRate");
+            System.out.println("System could not find currency rate");
         }
         return foundRate;
     }

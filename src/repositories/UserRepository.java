@@ -83,18 +83,18 @@ public class UserRepository {
         }
     }
     //depositByUserID()
-    public boolean depositToAccout(int userID, double value) {
+    public boolean depositToAccount(int userID, double value) {
 
         for (User user : users) {
             if (user.getUserID() == userID) {
-                System.out.println("found " + user);
+                System.out.println("Found " + user);
                 double userCurrentValue = user.getBalance();
                 user.setBalance(userCurrentValue + value);
-                System.out.println("updated user cash with" + user.getBalance());
+                System.out.println("Updated user cash to" + user.getBalance());
                 user.setUpdateded(LocalDate.now());
                 break;
             } else {
-                System.out.println("Error in UserRepository.depositByUserID: User not found");
+                System.out.println("User not found");
                 return false;
             }
         }
@@ -115,19 +115,18 @@ public class UserRepository {
             readFile();
             return true;
         } catch (IOException e) {
-            System.out.println("Error in UserRepository.depositByUserID");
+            System.out.println("Error in deposit");
             e.printStackTrace();
             return false;
         }
 
     }
 
-    //checkAccountCashBalance();
     public boolean checkAccountCashBalance(int userID, double value) {
         for(User user : users) {
             if (user.getUserID() == userID) {
                 if (user.getBalance() < value) {
-                    System.out.println("Error in UserRepository.withdrawByUserID: not enough money");
+                    System.out.println("Insufficient funds");
                     return false;
                 } else {
                     System.out.println(user.getBalance() + " Acceptable value");
@@ -138,14 +137,13 @@ public class UserRepository {
         return false;
     }
 
-    //withdrawByUserID()
     public boolean withdrawFromAccount(int userID, double value) {
         for (User user : users) {
 
             if (user.getUserID() == userID) {
-                System.out.println("found " + user + "in repository" );
+                System.out.println("Found " + user + "in repository" );
                 if (!checkAccountCashBalance(userID, value)) {
-                    System.out.println("Error in UserRepository.withdrawByUserID: not enough money");
+                    System.out.println("Insufficient funds");
                     return false;
                 } else {
                     double userCurrentValue = user.getBalance();
@@ -172,7 +170,7 @@ public class UserRepository {
             writer.close();
             return true;
         } catch (IOException e) {
-            System.out.println("Error in UserRepository.depositByUserID");
+            System.out.println("Error in withdraw");
             e.printStackTrace();
             return false;
         }
@@ -213,24 +211,6 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
-
-    //getUser()
-//    public User findUserMyEmail(String email) {
-//        User result = null;
-//        for (User user : users) {
-//            if(user.getEmail().equals(email)) {
-//                result = user;
-//
-//            }
-//        }
-//        if (result == null) {
-//            System.out.println("Systemet kunne ikke finde den indtastede bruger.");
-//
-//        }
-//        return result;
-//    }
-
-
 
     public List<User> getUsers() {
         return users;
