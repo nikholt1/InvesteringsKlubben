@@ -31,22 +31,6 @@ public class UserUI {
         }
     }
 
-    //private boolean isMainMenuRunning = true;
-    //private boolean isStockMarketRunning = true;
-    // controller logic? skal vi have én instantiation i main, og parse objects ned.
-    // eller, lave "new" instantiation af flere objekter igennem programmet.
-//    public UserUI(int userID) {
-//        this.userID = userID;
-//        this.userController = new UserController(userID);
-//    }
-    /*
-    // Usermuliheder:
-    user Menu >> valgmuligheder
-    - stockmarket lise
-    - userBased transaction history
-    - user account information
-
-    */
     public void printUserMenu() {
         System.out.println("""
                        -------------------
