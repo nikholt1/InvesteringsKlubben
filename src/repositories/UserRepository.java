@@ -31,6 +31,9 @@ public class UserRepository {
         users.clear();
         try {
             Scanner reader = new Scanner(new File(PATH));
+            if (reader.hasNextLine()) {
+                reader.nextLine();
+            }
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 Scanner lineScanner = new Scanner(line);
@@ -56,6 +59,7 @@ public class UserRepository {
 
         try {
             Writer writer = new FileWriter(PATH, true); // append mode
+
             int ID = 0;
             for (User user : users) {
                 ID++;
@@ -83,23 +87,26 @@ public class UserRepository {
         }
     }
     //depositByUserID()
-    public boolean depositToAccount(int userID, double value) {
-
+    public boolean depositToAccout(int userID, double value) {
+        readFile();
+        System.out.println(userID);
+        boolean userFound = false;
         for (User user : users) {
             if (user.getUserID() == userID) {
-                System.out.println("Found " + user);
+                System.out.println("found " + user);
                 double userCurrentValue = user.getBalance();
                 user.setBalance(userCurrentValue + value);
-                System.out.println("Updated user cash to" + user.getBalance());
+                System.out.println("updated user cash with" + user.getBalance());
                 user.setUpdateded(LocalDate.now());
                 break;
             } else {
-                System.out.println("User not found");
+                System.out.println("Error in UserRepository.depositByUserID: User not found");
                 return false;
             }
         }
         try {
             Writer writer = new FileWriter(PATH);
+            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated");
             for (User user : users) {
 //                System.out.println(user);
                 String formatted = user.getUserID() + ";" +
@@ -115,13 +122,14 @@ public class UserRepository {
             readFile();
             return true;
         } catch (IOException e) {
-            System.out.println("Error in deposit");
+            System.out.println("Error in UserRepository.depositByUserID");
             e.printStackTrace();
             return false;
         }
 
     }
 
+    //checkAccountCashBalance();
     public boolean checkAccountCashBalance(int userID, double value) {
         for(User user : users) {
             if (user.getUserID() == userID) {
@@ -137,6 +145,7 @@ public class UserRepository {
         return false;
     }
 
+    //withdrawByUserID()
     public boolean withdrawFromAccount(int userID, double value) {
         for (User user : users) {
 
@@ -156,6 +165,7 @@ public class UserRepository {
         }
         try {
             Writer writer = new FileWriter(PATH);
+            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated");
             for (User user : users) {
 //                System.out.println(user);
                 String formatted = user.getUserID() + ";" +

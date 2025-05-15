@@ -22,7 +22,7 @@ public class LoginController {
     }
 
     public void startUser(String email) {
-        userController = new UserController();
+        userController = new UserController(email);
         userController.start(email);
     }
 

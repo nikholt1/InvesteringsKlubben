@@ -53,11 +53,16 @@ public class TransactionService {
         double saleValue = stockValue * quantity;
         double convertedSaleValue = currencyService.calculateCurrencyToDKK(saleValue, stockMarket.getCurrency());
 
-        if (getQuantityOfSpecificStockTiedToUser(stockMarket.getTicker()) <= quantity) {
-            System.out.println("You do not have enough stocks in " + stockMarket.getTicker());
+
+        int userStockQuantity = checkUserStockQuantity(stockMarket, quantity);
+//        if (getQuantityOfSpecificStockTiedToUser(stockMarket.getTicker()) < quantity) {
+//            System.out.println("You do not have enough stocks in " + stockMarket.getTicker());
+//            return false;
+//        }
+        if (userStockQuantity < quantity) {
+            System.out.println("not enough stocks");
             return false;
         }
-
         try {
             if (writeTransactionToTransactionRepository(stockMarket, "sell", quantity)) {
                 userService.userDeposit(userId, convertedSaleValue);
@@ -68,6 +73,20 @@ public class TransactionService {
             return false;
         }
         return false;
+    }
+    public int checkUserStockQuantity(StockMarket stockMarket, int quantity) {
+        List<Transaction> userTransactions = getUserStocksByID(userId);
+        int actualQTY = 0;
+        for (Transaction transaction : userTransactions) {
+            if (transaction.getTicker().equals(stockMarket.getTicker())) {
+                if (transaction.getOrder_type().equals("buy")) {
+                    actualQTY += transaction.getQuantity();
+                } else if (transaction.getOrder_type().equals("sell")) {
+                    actualQTY -= transaction.getQuantity();
+                }
+            }
+        }
+        return actualQTY;
     }
 
     public boolean writeTransactionToTransactionRepository(StockMarket stockMarket, String buyOrSell, int quantity) {
@@ -107,7 +126,7 @@ public class TransactionService {
         List<Transaction> userTransactions = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
-            if (transaction.getUserId() == userID+1) {
+            if (transaction.getUserId() == userID) {
                 userTransactions.add(transaction);
             }
         }

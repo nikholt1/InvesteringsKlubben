@@ -175,14 +175,18 @@ public class UserUI {
 
     public void buyStock() {
 
+        viewStockMarket();
         System.out.println("Which market would you like to buy stock from? Enter here: ");
-        int choiceStock = scanner.nextInt();
-        scanner.nextLine();
+        String chosenTicker = scanner.nextLine();
+        StockMarket stock = userController.getSpecificStock(chosenTicker);
+        System.out.println(stock);
         System.out.println("How many stocks would you like to buy? Enter here: ");
         int choiceQty = scanner.nextInt();
+        System.out.println(choiceQty);
         scanner.nextLine();
 
-//        userController.buyStock();
+
+        userController.buyStock(stock, choiceQty);
 
     }
 
@@ -193,13 +197,13 @@ public class UserUI {
             System.out.println(transaction);
         }
         System.out.println("Which stock would you like to sell: ");
-        int choiceStock = scanner.nextInt();
-        scanner.nextLine();
+        String chosenTicker = scanner.nextLine();
+        StockMarket stock = userController.getSpecificStock(chosenTicker);
         System.out.println("What amount would you like to sell: ");
         int choiceQty = scanner.nextInt();
         scanner.nextLine();
 
-//        userController.sellStock();
+        userController.sellStock(stock, choiceQty);
     }
 }
 
