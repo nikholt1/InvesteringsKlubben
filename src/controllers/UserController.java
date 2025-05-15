@@ -45,17 +45,18 @@ public class UserController {
 //        this.transactionService = transactionService;
 //        this.userService = userService;
 //    }
-    public UserController() {
+    public UserController(String email) {
         this.stockMarketRepository = new StockMarketRepository();
         this.currencyRepository = new CurrencyRepository();
         this.transactionRepository = new TransactionRepository();
         this.userRepository = new UserRepository();
-
+        this.userService = new UserService(userRepository);
+        this.userID = getUserID(email);
 
         this.stockMarketService = new StockMarketService(stockMarketRepository);
         this.currencyService = new CurrencyService(currencyRepository);
         this.transactionService = new TransactionService(transactionRepository, userID); // mangler implementering
-        this.userService = new UserService(userRepository);
+
 
         this.userUI = new UserUI(this);
 
@@ -92,7 +93,13 @@ public class UserController {
     // fetch transactionService Data
 
     public void buyStock(StockMarket stockMarket, int quantity) {
-        transactionService.buyStock(stockMarket, quantity);
+        boolean failCheck = transactionService.buyStock(stockMarket, quantity);
+        if (failCheck) {
+            System.out.println("Success buy stock");
+        } else {
+            System.out.println("Failed buy stock");
+        }
+
     }
     public void sellStock(StockMarket stockMarket, int quantity) {
         transactionService.sellStock(stockMarket, quantity);
@@ -102,7 +109,7 @@ public class UserController {
 //        transactionService.viewUserTransactionHistory();
     }
     public List<Transaction> getUserStocks() {
-        return transactionService.getUserStocksByID(userID-1);
+        return transactionService.getUserStocksByID(userID);
     }
     public int getQuantityOfSpecificStockTiedToUser(String ticker) {
 //        return transactionService.getQuantityOfSpecificStockTiedToUser(ticker);
@@ -126,6 +133,10 @@ public class UserController {
     }
     public List<StockMarket> getStocks() {
         return stockMarketService.getStocks();
+    }
+
+    public StockMarket getSpecificStock(String ticker) {
+        return stockMarketService.getSpecificStock(ticker);
     }
 
 
