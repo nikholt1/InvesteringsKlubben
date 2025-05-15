@@ -87,7 +87,7 @@ public class UserRepository {
         }
     }
     //depositByUserID()
-    public boolean depositToAccout(int userID, double value) {
+    public boolean depositToAccount(int userID, double value) {
         readFile();
         System.out.println(userID);
         boolean userFound = false;
@@ -106,7 +106,7 @@ public class UserRepository {
         }
         try {
             Writer writer = new FileWriter(PATH);
-            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated");
+            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated\n");
             for (User user : users) {
 //                System.out.println(user);
                 String formatted = user.getUserID() + ";" +
@@ -165,7 +165,7 @@ public class UserRepository {
         }
         try {
             Writer writer = new FileWriter(PATH);
-            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated");
+            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated\n");
             for (User user : users) {
 //                System.out.println(user);
                 String formatted = user.getUserID() + ";" +
