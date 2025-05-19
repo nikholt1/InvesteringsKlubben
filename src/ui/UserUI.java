@@ -192,7 +192,7 @@ public class UserUI {
 
     public void sellStock() {
         List<Transaction> userStocks = userController.getUserStocks();
-        System.out.println("Your stocks: ");
+        System.out.println("Your transactions: ");
         for (Transaction transaction : userStocks) {
             System.out.println(transaction);
         }
