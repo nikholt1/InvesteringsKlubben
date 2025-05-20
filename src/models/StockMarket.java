@@ -31,7 +31,7 @@ public class StockMarket {
         this.lastUpdate = LocalDate.parse(lastUpdate, formatter);
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "StockMarket{" +
                 "ticker='" + ticker + '\'' +
@@ -44,6 +44,23 @@ public class StockMarket {
                 ", market='" + market + '\'' +
                 ", LastUpdate=" + lastUpdate +
                 '}';
+    }
+
+     */
+    @Override
+    public String toString() {
+        return """
+                Ticker:     %s
+                Name:       %s
+                Sector:     %s
+                Price:      %.2f
+                Currency:   %s
+                Rating:     %s
+                Dividend:   %.2f
+                Market:     %s
+                
+                (Last Updated:   %s)
+                """.formatted(ticker, name, sector, price, currency, rating, dividend_yield, market, lastUpdate);
     }
 
     /// Attributes

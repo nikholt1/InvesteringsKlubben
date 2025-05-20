@@ -62,8 +62,18 @@ public class AdminUI {
 
     public void viewRanking() {
         List<User> rankUserList = adminController.getRankedUserByPortfolioBaseList();
+        int count = 1;
+        System.out.printf("\n| %-4s | %-22s | %-18s |\n",
+                "Rank", "Full Name", "Portfolio Balance" );
+        System.out.println("------------------------------------------------------");
         for (User user : rankUserList) {
-            System.out.println(user);
+            System.out.printf("| #%-3d | %-22s | %-18s |",
+                    count,
+                    user.getFullName(),
+                    user.getBalance()
+                    );
+            count++;
+            System.out.println("\n------------------------------------------------------");
         }
     }
 

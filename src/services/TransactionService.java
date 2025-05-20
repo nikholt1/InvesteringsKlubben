@@ -1,7 +1,6 @@
 package services;
 
 import comparators.ComparatoruserSortByCash;
-import models.Currency;
 import models.StockMarket;
 import models.Transaction;
 import models.User;
@@ -137,10 +136,10 @@ public class TransactionService {
     public List<User> getAllUserPortfolioData() {
         List<User> updatedPortfolioList = new ArrayList<>();
         List<User> AllUsers = userService.getAllUsers();
-        int userID = 0;
+        int count = 0;
         for (User user : AllUsers) {
-            updatedPortfolioList.add(getUsersDataAndUpdatePortfolioData(userID));
-            userID++;
+            updatedPortfolioList.add(getUserPortfolioData(count));
+            count++;
         }
         return updatedPortfolioList;
     }
@@ -148,7 +147,7 @@ public class TransactionService {
     //getUsersDataAndUpdatePortfolioData()
     public User getUsersDataAndUpdatePortfolioData(int userID) {
         User user = userService.findUserByID(userID);
-        List<Transaction> usersTransactions = getUserStocksByID(userID);
+        List<Transaction> usersTransactions = getUserStocksByID(user.getUserID());
         double transactionsSum = 0.0;
         for (Transaction transaction : usersTransactions) {
             int QTY = transaction.getQuantity();
@@ -156,8 +155,33 @@ public class TransactionService {
             StockMarket stock = stockMarketService.getSpecificStock(ticker);
             double priceOverQTY = stock.getPrice() * QTY;
             double userBalance = user.getBalance();
-            System.out.println(userBalance);
+
             user.setBalance(userBalance + priceOverQTY);
+
+        }
+        return user;
+    }
+
+    public User getUserPortfolioData(int userId) {
+        User user = userService.findUserByID(userId);
+        List<Transaction> userTransactions = getUserStocksByID(user.getUserID());
+
+        for (Transaction transaction : userTransactions) {
+            int stockQuantity = transaction.getQuantity();
+            String ticker = transaction.getTicker();
+            StockMarket stock = stockMarketService.getSpecificStock(ticker);
+            double transactionValue = 0.0;
+            double userBalance = user.getBalance();
+
+            if (transaction.getOrder_type().equals("buy")) {
+                transactionValue = stock.getPrice() * stockQuantity;
+            }
+
+            if (transaction.getOrder_type().equals("sell")) {
+                transactionValue = transaction.getPrice() * stockQuantity;
+            }
+
+            user.setBalance(transactionValue + userBalance);
         }
         return user;
     }

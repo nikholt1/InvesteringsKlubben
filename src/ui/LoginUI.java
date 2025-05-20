@@ -65,8 +65,7 @@ public class LoginUI {
 
     public String emailCheck() {
         System.out.println("""
-                Please enter your email:
-                """);
+                Please enter your email:\s""");
         return scanner.nextLine();
     }
 

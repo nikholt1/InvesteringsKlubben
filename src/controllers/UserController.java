@@ -95,9 +95,9 @@ public class UserController {
     public void buyStock(StockMarket stockMarket, int quantity) {
         boolean failCheck = transactionService.buyStock(stockMarket, quantity);
         if (failCheck) {
-            System.out.println("Success buy stock");
+            System.out.println("Purchase completed");
         } else {
-            System.out.println("Failed buy stock");
+            System.out.println("Error during purchase");
         }
 
     }
@@ -139,9 +139,10 @@ public class UserController {
         return stockMarketService.getSpecificStock(ticker);
     }
 
-
-
-
+    public double getPortfolioBalance() {
+        User currentUser = transactionService.getUserPortfolioData(userID);
+        return currentUser.getBalance();
+    }
 
 
     // fetch userService Data

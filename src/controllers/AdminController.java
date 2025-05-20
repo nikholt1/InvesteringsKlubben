@@ -11,7 +11,6 @@ import services.StockMarketService;
 import services.TransactionService;
 import services.UserService;
 import ui.AdminUI;
-import ui.UserUI;
 
 import java.util.List;
 
@@ -84,7 +83,7 @@ public class AdminController {
     }
 
     public User getUsersDataAndUpdatePortfolioData(int userID) {
-        return transactionService.getUsersDataAndUpdatePortfolioData(userID);
+        return transactionService.getUserPortfolioData(userID);
     }
 
     public List<User> getRankedUserByPortfolioBaseList() {

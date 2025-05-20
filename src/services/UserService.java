@@ -21,6 +21,7 @@ public class UserService {
 
     //findUserData()
     public User findUserData(String email) {
+        userRepository.readFile();
         for (User user : users) {
             if (user.getEmail().equals(email)) {
                 return user;
@@ -34,7 +35,6 @@ public class UserService {
         int count = 0;
         for (User user : users) {
             if (count == userID) {
-                System.out.println(user);
                 return user;
             }
             count++;

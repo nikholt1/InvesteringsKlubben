@@ -127,6 +127,9 @@ public class UserUI {
 
     public void viewAccount() {
         User user = userController.findUserData();
+        double portfolioBalance = userController.getPortfolioBalance();
+        String positiveOrNegative = portfolioBalance < 100000 ? ANSI_RED + portfolioBalance + ANSI_RESET : ANSI_GREEN + portfolioBalance + ANSI_RESET;
+
         System.out.printf("""
                        ------------------
                       |      PROFILE     |
@@ -136,8 +139,11 @@ public class UserUI {
                 Name:           %s
                 Email:          %s
                 Date of birth:  %s
+                
+                Current cash available: %s%.2f%s
+                Portfolio value:        %s
                 \n
-                """, user.getUserID(), user.getFullName(), user.getEmail(), user.getBirthDate());
+                """, user.getUserID(), user.getFullName(), user.getEmail(), user.getBirthDate(), ANSI_GREEN, user.getBalance(), ANSI_RESET, positiveOrNegative);
     }
 
 
@@ -182,7 +188,6 @@ public class UserUI {
         System.out.println(stock);
         System.out.println("How many stocks would you like to buy? Enter here: ");
         int choiceQty = scanner.nextInt();
-        System.out.println(choiceQty);
         scanner.nextLine();
 
 

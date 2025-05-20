@@ -137,7 +137,7 @@ public class UserRepository {
                     System.out.println("Insufficient funds");
                     return false;
                 } else {
-                    System.out.println(user.getBalance() + " Acceptable value");
+                    // System.out.println(user.getBalance() + " Acceptable value");
                     return true;
                 }
             }
@@ -150,7 +150,6 @@ public class UserRepository {
         for (User user : users) {
 
             if (user.getUserID() == userID) {
-                System.out.println("Found " + user + "in repository" );
                 if (!checkAccountCashBalance(userID, value)) {
                     System.out.println("Insufficient funds");
                     return false;
