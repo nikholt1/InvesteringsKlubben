@@ -69,8 +69,8 @@ public class AdminController {
         return userService.getAllUsers();
     }
 
-    public boolean writeNewUsers(String name, String email, double balance, String birthDate) {
-        return userService.writeNewUser(name, email, balance, birthDate);
+    public boolean writeNewUsers(String name, String email, String birthDate) {
+        return userService.writeNewUser(name, email, birthDate);
                 //11;King of Mauretania;atlas@northAfrica.ly;04-08-1997;10000.0;06-05-2025;06-05-2025;
     }
 

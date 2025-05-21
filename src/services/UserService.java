@@ -19,6 +19,30 @@ public class UserService {
         users = userRepository.getUsers();
     }
 
+    // Method to initialize user balance based on transactions and init_cash from CSV
+    public double calculateUserCashBalance(int userId, double sumOfTransactions) {
+        double userBalance = 0.0;
+
+        for (User user : users) {
+            if (user.getUserID() == userId) {
+                userBalance = user.getINIT_CASH() + sumOfTransactions;
+            }
+        }
+        return userBalance;
+    }
+
+    public double calculateUserPortfolioValue(int userId) {
+        double userPortfolioValue = 0.0;
+
+        for (User user : users) {
+            if (user.getUserID() == userId) {
+                userPortfolioValue = user.getINIT_CASH();
+            }
+        }
+
+        return userPortfolioValue;
+    }
+
     //findUserData()
     public User findUserData(String email) {
         for (User user : users) {
@@ -31,19 +55,18 @@ public class UserService {
 
 
     public User findUserByID(int userID) {
-        int count = 0;
         for (User user : users) {
-            if (count == userID) {
+            if (user.getUserID() == userID) {
                 System.out.println(user);
                 return user;
             }
-            count++;
         }
         System.out.println("User not found");
         return null;
     }
 
     // writeNewUserData() -> Admin
+    /*
     public boolean updateUserCashValue(String email, int value) {
         try {
             for (User user : users) {
@@ -62,16 +85,15 @@ public class UserService {
 
     }
 
-    public boolean writeNewUser(String name, String email, double balance, String birthdate) {
-        if (balance < 10_000) {
-            return false;
-        }
+     */
+
+    public boolean writeNewUser(String name, String email, String birthdate) {
         try {
-            userRepository.writeNewUserToFile(name, email, balance, birthdate);
+            userRepository.writeNewUserToFile(name, email, birthdate);
             users = userRepository.getUsers();
             return true;
         } catch (Exception e) {
-            System.out.println("Error in creatin user");
+            System.out.println("Error in creating user");
             e.printStackTrace();
             return false;
         }
@@ -103,6 +125,7 @@ public class UserService {
     }
 
     //userDeposit()
+    /*
     public boolean userDeposit(int userID, double value) {
         if (value < 0) {
             System.out.println("Error in deposit: Value must be over 0");
@@ -118,9 +141,11 @@ public class UserService {
         }
     }
 
+     */
 
 
 
+    /*
     //userWithdraw()
     public boolean userWithdraw(int userID, double value) {
         if (value < 0) {
@@ -137,15 +162,22 @@ public class UserService {
         }
     }
 
+     */
+    /*
     public boolean checkUserCashBalance(int userID, double value) {
         try {
-            return userRepository.checkAccountCashBalance(userID, value);
+            if (calculateUserCashBalance(userID, value)) {
+
+            };
         } catch (Exception e) {
             System.out.println("Error in fetching balance");
             e.printStackTrace();
             return false;
         }
     }
+
+     */
+
 
 
 

@@ -93,7 +93,7 @@ public class UserController {
     // fetch transactionService Data
 
     public void buyStock(StockMarket stockMarket, int quantity) {
-        boolean failCheck = transactionService.buyStock(stockMarket, quantity);
+        boolean failCheck = transactionService.buyStock(stockMarket, quantity, fetchUserBalance(userID));
         if (failCheck) {
             System.out.println("Success buy stock");
         } else {
@@ -149,6 +149,8 @@ public class UserController {
         String email = user.getEmail();
         return userService.findUserData(email);
     }
+
+    /*
     public boolean updateUserCashValue(String email, int value) {
         return userService.updateUserCashValue(email, value);
     }
@@ -158,10 +160,27 @@ public class UserController {
         return userService.userWithdraw(userID, value);
     }
 
+     */
+    /*
     public boolean checkUserCashBalance(double value) {
         return userService.checkUserCashBalance(userID, value);
     }
 
+     */
+
+    public double fetchUserAssetValue(int userID) {
+        // stockMarketService.getStockValue
+        return transactionService.getUserAssetValue(userID);
+
+    }
+
+    public double fetchUserBalance(int userID) {
+        return userService.calculateUserCashBalance(userID, transactionService.calculateSumOfTransactions(userID));
+    }
+
+    public double fetchUserPortfolioValue(int userID) {
+        return fetchUserAssetValue(userID) + fetchUserBalance(userID);
+    }
 
     public int getUserID(String email) {
         return userService.getUserID(email);              /// måske redundant

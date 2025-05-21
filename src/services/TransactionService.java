@@ -1,7 +1,6 @@
 package services;
 
 import comparators.ComparatoruserSortByCash;
-import models.Currency;
 import models.StockMarket;
 import models.Transaction;
 import models.User;
@@ -35,14 +34,14 @@ public class TransactionService {
         this.userId = userId;
     }
 
-    public boolean buyStock(StockMarket stockMarket, int quantity) {
+    public boolean buyStock(StockMarket stockMarket, int quantity, double cashBalance) {
         double price = stockMarket.getPrice();
         double sum = price * quantity;
         double convertedSum = currencyService.calculateCurrencyToDKK(sum, stockMarket.getCurrency());
 
-        if (userService.checkUserCashBalance(userId, convertedSum)) {
+        if (cashBalance >= convertedSum) {
             if (writeTransactionToTransactionRepository(stockMarket, "buy", quantity)) {
-                return userService.userWithdraw(userId, convertedSum);
+                return true;
             }
         }
         return false;
@@ -65,7 +64,7 @@ public class TransactionService {
         }
         try {
             if (writeTransactionToTransactionRepository(stockMarket, "sell", quantity)) {
-                userService.userDeposit(userId, convertedSaleValue);
+                // userService.userDeposit(userId, convertedSaleValue);
                 return true;
             }
         } catch (Exception e) {
@@ -122,6 +121,7 @@ public class TransactionService {
         }
         return userTransactions;
     }
+
     public List<Transaction> getUserStocksByID(int userID) {
         List<Transaction> userTransactions = new ArrayList<>();
 
@@ -137,10 +137,10 @@ public class TransactionService {
     public List<User> getAllUserPortfolioData() {
         List<User> updatedPortfolioList = new ArrayList<>();
         List<User> AllUsers = userService.getAllUsers();
-        int userID = 0;
+        int count = 0;
         for (User user : AllUsers) {
-            updatedPortfolioList.add(getUsersDataAndUpdatePortfolioData(userID));
-            userID++;
+            updatedPortfolioList.add(getUsersDataAndUpdatePortfolioData(count));
+            count++;
         }
         return updatedPortfolioList;
     }
@@ -155,12 +155,68 @@ public class TransactionService {
             String ticker = transaction.getTicker();
             StockMarket stock = stockMarketService.getSpecificStock(ticker);
             double priceOverQTY = stock.getPrice() * QTY;
-            double userBalance = user.getBalance();
+            double userBalance = user.getINIT_CASH();
             System.out.println(userBalance);
-            user.setBalance(userBalance + priceOverQTY);
+            // user.setInitCash(userBalance + priceOverQTY);
         }
         return user;
     }
+
+    public double getUserAssetValue(int userId) {
+        User user = userService.findUserByID(userId);
+        List<Transaction> userTransactions = getUserStocksByID(user.getUserID());
+
+        double stockValue = 0.0;
+        StockMarket stockMarket;
+
+        for (Transaction transaction : userTransactions) {
+
+            if (transaction.getOrder_type().equals("buy")) {
+
+                stockValue += stockMarketService.getSpecificStock(transaction.getTicker()).getPrice() * transaction.getQuantity();
+                // activeTransactions.add(transaction);
+            }
+
+            if (transaction.getOrder_type().equals("sell")) {
+                stockValue -= stockMarketService.getSpecificStock(transaction.getTicker()).getPrice() * transaction.getQuantity();
+
+                // activeTransactions.remove(transaction);
+            }
+        }
+        /*
+        for (Transaction activeTransaction : activeTransactions) {
+            stockValue += stockMarketService.getSpecificStock(activeTransaction.getTicker()).getPrice() * activeTransaction.getQuantity();
+        }
+
+         */
+
+        return stockValue;
+
+
+
+    }
+
+
+
+    public double calculateSumOfTransactions(int userId) {
+        List<Transaction> userTransactions = getUserStocksByID(userId);
+
+        double transactionSum = 0.0;
+
+        for (Transaction transaction : userTransactions) {
+            int quantity = transaction.getQuantity();
+
+            if (transaction.getOrder_type().equals("buy")) {
+                transactionSum -= transaction.getPrice() * quantity;
+            }
+
+            if (transaction.getOrder_type().equals("sell")) {
+                transactionSum += transaction.getPrice() * quantity;
+            }
+        }
+        return transactionSum;
+    }
+
 
     //getRankedUserByPortfolioBaseList() •Kunne få præsenteret en rangliste over hvem der klarer sig bedst
     public List<User> getRankedUserByPortfolioBaseList() {

@@ -127,6 +127,10 @@ public class UserUI {
 
     public void viewAccount() {
         User user = userController.findUserData();
+        double cashBalance = userController.fetchUserBalance(user.getUserID());
+        double valueInAssets = userController.fetchUserAssetValue(user.getUserID());
+        double totalPortfolioValue = userController.fetchUserPortfolioValue(user.getUserID());
+
         System.out.printf("""
                        ------------------
                       |      PROFILE     |
@@ -136,10 +140,18 @@ public class UserUI {
                 Name:           %s
                 Email:          %s
                 Date of birth:  %s
+                
+                Cash available:         %.2f
+                Value in assets:        %.2f
+                
+                Total Portfolio value:  %.2f
+                
                 \n
-                """, user.getUserID(), user.getFullName(), user.getEmail(), user.getBirthDate());
+                """, user.getUserID(), user.getFullName(), user.getEmail(), user.getBirthDate(), cashBalance, valueInAssets, totalPortfolioValue);
     }
-
+    // Value in assets:    %.2f
+    //
+    //                Total Portfolio value:  %.2f
 
     public void viewStockMarket() {
         List<StockMarket> stocks = userController.getStocks();

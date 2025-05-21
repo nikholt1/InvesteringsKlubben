@@ -42,10 +42,12 @@ public class UserRepository {
                 String fullName = lineScanner.next();
                 String email = lineScanner.next();
                 String birthDate = lineScanner.next();
-                double initialCash = Double.parseDouble(lineScanner.next());
+                lineScanner.next();
+                // double initialCash = Double.parseDouble(lineScanner.next());
                 String createdAt = lineScanner.next();
                 String lastUpdated = lineScanner.next();
-                users.add(new User(userID, fullName, email, birthDate, initialCash, createdAt, lastUpdated));
+                // users.add(new User(userID, fullName, email, birthDate, initialCash, createdAt, lastUpdated));
+                users.add(new User(userID, fullName, email, birthDate, createdAt, lastUpdated));
             }
             reader.close();
         } catch (IOException e) {
@@ -54,7 +56,7 @@ public class UserRepository {
         }
     }
     // writeToFile()
-    public void writeNewUserToFile(String name, String email, double balance, String birthDate) {
+    public void writeNewUserToFile(String name, String email, String birthDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         try {
@@ -75,7 +77,7 @@ public class UserRepository {
             String formattedUpdated = updated.format(formatter);
 
             String formattedLine = newID + ";" + name + ";" + email + ";" +
-                    formattedBirthDate + ";" + balance + ";" +
+                    formattedBirthDate + ";" + 100_000 + ";" +
                     formattedCreated + ";" + formattedUpdated + "\n";
             writer.write(formattedLine);
             writer.close();
@@ -87,6 +89,7 @@ public class UserRepository {
         }
     }
     //depositByUserID()
+    /*
     public boolean depositToAccount(int userID, double value) {
         readFile();
         System.out.println(userID);
@@ -94,9 +97,9 @@ public class UserRepository {
         for (User user : users) {
             if (user.getUserID() == userID) {
                 System.out.println("found " + user);
-                double userCurrentValue = user.getBalance();
-                user.setBalance(userCurrentValue + value);
-                System.out.println("updated user cash with" + user.getBalance());
+                double userCurrentValue = user.getINIT_CASH();
+                // user.setInitCash(userCurrentValue + value);
+                System.out.println("updated user cash with" + user.getINIT_CASH());
                 user.setUpdateded(LocalDate.now());
                 break;
             } else {
@@ -113,7 +116,7 @@ public class UserRepository {
                         user.getFullName() + ";" +
                         user.getEmail() + ";" +
                         user.getBirthDate().format(formatter) + ";" +
-                        user.getBalance() + ";" +
+                        user.getINIT_CASH() + ";" +
                         user.getCreatedAt().format(formatter) + ";" +
                         user.getUpdateded().format(formatter) + "\n";
                 writer.write(formatted);
@@ -129,15 +132,18 @@ public class UserRepository {
 
     }
 
+     */
+
     //checkAccountCashBalance();
+    /*
     public boolean checkAccountCashBalance(int userID, double value) {
         for(User user : users) {
             if (user.getUserID() == userID) {
-                if (user.getBalance() < value) {
+                if (user.getINIT_CASH() < value) {
                     System.out.println("Insufficient funds");
                     return false;
                 } else {
-                    System.out.println(user.getBalance() + " Acceptable value");
+                    System.out.println(user.getINIT_CASH() + " Acceptable value");
                     return true;
                 }
             }
@@ -145,6 +151,9 @@ public class UserRepository {
         return false;
     }
 
+     */
+
+    /*
     //withdrawByUserID()
     public boolean withdrawFromAccount(int userID, double value) {
         for (User user : users) {
@@ -155,9 +164,9 @@ public class UserRepository {
                     System.out.println("Insufficient funds");
                     return false;
                 } else {
-                    double userCurrentValue = user.getBalance();
-                    user.setBalance(userCurrentValue - value);
-                    System.out.println("Account balance updated to: " + user.getBalance());
+                    double userCurrentValue = user.getINIT_CASH();
+                    user.setInitCash(userCurrentValue - value);
+                    System.out.println("Account balance updated to: " + user.getINIT_CASH());
                     user.setUpdateded(LocalDate.now());
                 }
 
@@ -172,7 +181,7 @@ public class UserRepository {
                         user.getFullName() + ";" +
                         user.getEmail() + ";" +
                         user.getBirthDate().format(formatter) + ";" +
-                        user.getBalance() + ";" +
+                        user.getINIT_CASH() + ";" +
                         user.getCreatedAt().format(formatter) + ";" +
                         user.getUpdateded().format(formatter) + "\n";
                 writer.write(formatted);
@@ -186,17 +195,19 @@ public class UserRepository {
         }
     }
 
+     */
 
 
 
 
+    /*
     public void updateUserCashData(int userID, int value) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         for (User user : users) {
             if (user.getUserID() == userID) {
-                double userCash = user.getBalance();
-                user.setBalance(userCash += value);
+                double userCash = user.getINIT_CASH();
+                user.setInitCash(userCash += value);
                 user.setUpdateded(LocalDate.now());
             }
         }
@@ -208,7 +219,7 @@ public class UserRepository {
                         user.getFullName() + ";" +
                         user.getEmail() + ";" +
                         user.getBirthDate().format(formatter) + ";" +
-                        user.getBalance() + ";" +
+                        user.getINIT_CASH() + ";" +
                         user.getCreatedAt().format(formatter) + ";" +
                         user.getUpdateded().format(formatter) + "\n";
                 writer.write(formatted);
@@ -221,10 +232,8 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
-
+    */
     public List<User> getUsers() {
         return users;
     }
-
-
 }
