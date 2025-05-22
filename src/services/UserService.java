@@ -53,7 +53,6 @@ public class UserService {
     public User findUserByID(int userID) {
         for (User user : users) {
             if (user.getUserID() == userID) {
-                System.out.println(user);
                 return user;
             }
         }
