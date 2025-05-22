@@ -26,7 +26,7 @@ public class AdminController {
     private StockMarketService stockMarketService;
     private TransactionService transactionService;
     private UserService userService;
-    private UserController userController;
+
 
     private AdminUI adminUI;
 
@@ -45,36 +45,26 @@ public class AdminController {
         this.adminUI = new AdminUI(this);
     }
 
-    public List<StockMarket> getStocks() {
-        return stockMarketService.getStocks();
-    }
+
 
     public void start() {
         adminUI.start();
     }
 
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
 
     public boolean writeNewUsers(String name, String email, String birthDate) {
         return userService.writeNewUser(name, email, birthDate);
     }
 
-    public List<User> getAllUserPortfolioData() {
-        return transactionService.getAllUserPortfolioData();
-    }
-    /*
-    public List<User> getRankedUserByPortfolioBaseList() {
-        return transactionService.getRankedUserByPortfolioBaseList();
-    }
 
-     */
     public List<User> getUserPortfoliosSorted() {
         return transactionService.getUserPortfoliosSorted();
     }
 
-    public List<String> getStocksAndSectorsDistribution() {
-        return transactionService.getStocksSectorDistribution();
+    public List<String> getStocksAndDistribution() {
+        return transactionService.getStocksDistribution();
+    }
+    public List<String> getSectorDistribution() {
+        return transactionService.getSectorDistribution();
     }
 }
