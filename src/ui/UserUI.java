@@ -12,7 +12,6 @@ import java.util.Scanner;
 public class UserUI {
     private final Scanner scanner = new Scanner(System.in);
     private final UserController userController;
-    private int userID = 1;
 
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";

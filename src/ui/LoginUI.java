@@ -47,21 +47,7 @@ public class LoginUI {
         }
     }
 
-    public boolean isAdmin(int inputChoice) {
-            switch (inputChoice) {
-                case 1 -> {
-                    isRunning = false;
-                    return false;
-                }
-                case 2 -> {
-                    isRunning = false;
-                    return true;
-                }
-                case 9 -> System.exit(0);
-                default -> System.out.println("Please enter a valid option");
-            }
-        return false;
-    }
+
 
     public String emailCheck() {
         System.out.println("""
@@ -69,9 +55,7 @@ public class LoginUI {
         return scanner.nextLine();
     }
 
-    public boolean getIsAdmin() {
-        return isAdmin;
-    }
+
 }
 
 
