@@ -47,8 +47,6 @@ public class TransactionService {
     }
 
     public boolean sellStock(StockMarket stockMarket, int quantity) {
-        double stockValue = stockMarket.getPrice();
-        double saleValue = stockValue * quantity;
 
         int userStockQuantity = checkUserStockQuantity(stockMarket, quantity);
 
@@ -91,29 +89,9 @@ public class TransactionService {
         }
     }
 
-    public void viewUserTransactionHistory() {
-        double totalSpent = 0.0;
-        for (Transaction transaction : transactions) {
-            if (transaction.getUserId() == userId) {
-                totalSpent += transaction.getPrice();
-                System.out.println(transaction);
-            }
-        }
 
-        System.out.println("You have spent " + totalSpent + " since becoming a member");
-    }
 
-    public List<Transaction> getUserStocks() {
-        List<Transaction> userTransactions = new ArrayList<>();
 
-        for (Transaction transaction : transactions) {
-            if (transaction.getUserId() == userId) {
-                System.out.println(userId);
-                userTransactions.add(transaction);
-            }
-        }
-        return userTransactions;
-    }
 
     public List<Transaction> getUserStocksByID(int userID) {
         List<Transaction> userTransactions = new ArrayList<>();
@@ -126,32 +104,7 @@ public class TransactionService {
         return userTransactions;
     }
 
-    public List<User> getAllUserPortfolioData() {
-        List<User> updatedPortfolioList = new ArrayList<>();
-        List<User> AllUsers = userService.getAllUsers();
-        int count = 0;
-        for (User user : AllUsers) {
-            updatedPortfolioList.add(getUsersDataAndUpdatePortfolioData(count));
-            count++;
-        }
-        return updatedPortfolioList;
-    }
 
-    public User getUsersDataAndUpdatePortfolioData(int userID) {
-        User user = userService.findUserByID(userID);
-        List<Transaction> usersTransactions = getUserStocksByID(userID);
-        double transactionsSum = 0.0;
-        for (Transaction transaction : usersTransactions) {
-            int QTY = transaction.getQuantity();
-            String ticker = transaction.getTicker();
-            StockMarket stock = stockMarketService.getSpecificStock(ticker);
-            double priceOverQTY = stock.getPrice() * QTY;
-            double userBalance = user.getINIT_CASH();
-            System.out.println(userBalance);
-            // user.setInitCash(userBalance + priceOverQTY);
-        }
-        return user;
-    }
 
     public double getUserAssetValue(int userId) {
         User user = userService.findUserByID(userId);
@@ -192,15 +145,7 @@ public class TransactionService {
         return transactionSum;
     }
 
-    /*
-    //getRankedUserByPortfolioBaseList() •Kunne få præsenteret en rangliste over hvem der klarer sig bedst
-    public List<User> getRankedUserByPortfolioBaseList() {
-        List<User> updatedPortfolioList = getAllUserPortfolioData();
-        updatedPortfolioList.sort(new ComparatoruserSortByCash());
-        return updatedPortfolioList;
-    }
 
-     */
 
     public List<User> getUserPortfoliosSorted() {
         List<User> userPortfoliosSorted = userService.getAllUsers();
@@ -263,21 +208,5 @@ public class TransactionService {
             stockDistribution.add("Sector: " + sector + " Quantity = " + QTY + " Standing volume = " + sum );
         }
         return stockDistribution;
-    }
-
-    public int getQuantityOfSpecificStockTiedToUser(String ticker) {
-        List<Transaction> userTransactions = getUserStocks();
-        int quantity = 0;
-
-        for (Transaction transaction : userTransactions) {
-            if (transaction.getTicker().equals(ticker)) {
-                quantity += transaction.getQuantity();
-            }
-        }
-        return quantity;
-    }
-
-    public List<Transaction> getAllTransactions() {
-       return transactionRepository.getTransactions();
     }
 }

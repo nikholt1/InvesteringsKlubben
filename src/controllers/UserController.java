@@ -59,17 +59,6 @@ public class UserController {
         userUI.start();
     }
 
-    public double getCurrencyByRate(double rate) {
-        return currencyService.getCurrencyRate(rate);
-    }
-
-    public double calculateCurrencyToDKK(double DKKValue, String base_currency) {
-        return currencyService.calculateCurrencyToDKK(DKKValue, base_currency);
-    }
-
-    public double calculateCurrencyDKKToCurrency(double DKKValue, String base_currency) {
-        return currencyService.calculateCurrencyDKKToCurrency(DKKValue, base_currency);
-    }
 
     public void buyStock(StockMarket stockMarket, int quantity) {
         boolean failCheck = transactionService.buyStock(stockMarket, quantity, fetchUserBalance(userID));
@@ -87,22 +76,7 @@ public class UserController {
     public List<Transaction> getUserStocks() {
         return transactionService.getUserStocksByID(userID);
     }
-    public int getQuantityOfSpecificStockTiedToUser(String ticker) {
-        return -1;
-    }
 
-    public String getTicker(String ticker) {
-        return stockMarketService.getTicker(ticker);
-    }
-    public double getPrice(Double price) {
-        return stockMarketService.getPrice(price);
-    }
-    public String getStockMarketCurrency() {
-        return stockMarketService.getCurrency();
-    }
-    public StockMarketRepository getStockMarketRepository() {
-        return stockMarketService.getStockMarketRepository();
-    }
     public List<StockMarket> getStocks() {
         return stockMarketService.getStocks();
     }

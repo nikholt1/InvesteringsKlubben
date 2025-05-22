@@ -28,17 +28,7 @@ public class UserService {
         return userBalance;
     }
 
-    public double calculateUserPortfolioValue(int userId) {
-        double userPortfolioValue = 0.0;
 
-        for (User user : users) {
-            if (user.getUserID() == userId) {
-                userPortfolioValue = user.getINIT_CASH();
-            }
-        }
-
-        return userPortfolioValue;
-    }
 
     public User findUserData(String email) {
         for (User user : users) {
@@ -69,12 +59,6 @@ public class UserService {
             System.out.println("Error in creating user");
             e.printStackTrace();
             return false;
-        }
-    }
-    //printAllUsers()
-    public void printAllUsers() {
-        for (User user : users) {
-            System.out.println(user);
         }
     }
 
