@@ -5,13 +5,10 @@ import java.time.format.DateTimeFormatter;
 
 public class StockMarket {
 
-    //TODO
-
     private String ticker;
     private String name;
     private String sector;
     private double price;
-    // private Currency currency;
     String currency;
     private String rating;
     private double dividend_yield;
@@ -45,14 +42,6 @@ public class StockMarket {
                 ", LastUpdate=" + lastUpdate +
                 '}';
     }
-
-    /// Attributes
-
-
-
-
-
-
 
     public String getTicker() {
         return ticker;
@@ -125,12 +114,4 @@ public class StockMarket {
     public void setLastUpdate(LocalDate lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
-/// Constructor
-
-
-    /// Getters
-
-
-
-    /// toString
 }

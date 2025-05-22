@@ -1,8 +1,6 @@
 package ui;
 
 import controllers.AdminController;
-import controllers.UserController;
-import models.StockMarket;
 import models.User;
 import utilites.HandleIntInput;
 

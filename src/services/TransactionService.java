@@ -26,7 +26,6 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final int userId;
 
-
     public TransactionService(TransactionRepository transactionRepository, int userId) {
         this.transactionRepository = transactionRepository;
         transactionRepository.readList();
@@ -50,21 +49,15 @@ public class TransactionService {
     public boolean sellStock(StockMarket stockMarket, int quantity) {
         double stockValue = stockMarket.getPrice();
         double saleValue = stockValue * quantity;
-        double convertedSaleValue = currencyService.calculateCurrencyToDKK(saleValue, stockMarket.getCurrency());
-
 
         int userStockQuantity = checkUserStockQuantity(stockMarket, quantity);
-//        if (getQuantityOfSpecificStockTiedToUser(stockMarket.getTicker()) < quantity) {
-//            System.out.println("You do not have enough stocks in " + stockMarket.getTicker());
-//            return false;
-//        }
+
         if (userStockQuantity < quantity) {
             System.out.println("not enough stocks");
             return false;
         }
         try {
             if (writeTransactionToTransactionRepository(stockMarket, "sell", quantity)) {
-                // userService.userDeposit(userId, convertedSaleValue);
                 return true;
             }
         } catch (Exception e) {
@@ -133,7 +126,6 @@ public class TransactionService {
         return userTransactions;
     }
 
-    //getAllUsersPortfolioData() •Kunne se en samlet oversigt over alle brugeres porteføljeværdi
     public List<User> getAllUserPortfolioData() {
         List<User> updatedPortfolioList = new ArrayList<>();
         List<User> AllUsers = userService.getAllUsers();
@@ -145,7 +137,6 @@ public class TransactionService {
         return updatedPortfolioList;
     }
 
-    //getUsersDataAndUpdatePortfolioData()
     public User getUsersDataAndUpdatePortfolioData(int userID) {
         User user = userService.findUserByID(userID);
         List<Transaction> usersTransactions = getUserStocksByID(userID);
@@ -167,35 +158,19 @@ public class TransactionService {
         List<Transaction> userTransactions = getUserStocksByID(user.getUserID());
 
         double stockValue = 0.0;
-        StockMarket stockMarket;
 
         for (Transaction transaction : userTransactions) {
 
             if (transaction.getOrder_type().equals("buy")) {
-
                 stockValue += stockMarketService.getSpecificStock(transaction.getTicker()).getPrice() * transaction.getQuantity();
-                // activeTransactions.add(transaction);
             }
 
             if (transaction.getOrder_type().equals("sell")) {
                 stockValue -= stockMarketService.getSpecificStock(transaction.getTicker()).getPrice() * transaction.getQuantity();
-
-                // activeTransactions.remove(transaction);
             }
         }
-        /*
-        for (Transaction activeTransaction : activeTransactions) {
-            stockValue += stockMarketService.getSpecificStock(activeTransaction.getTicker()).getPrice() * activeTransaction.getQuantity();
-        }
-
-         */
-
         return stockValue;
-
-
-
     }
-
 
 
     public double calculateSumOfTransactions(int userId) {
@@ -223,28 +198,6 @@ public class TransactionService {
         List<User> updatedPortfolioList = getAllUserPortfolioData();
         updatedPortfolioList.sort(new ComparatoruserSortByCash());
         return updatedPortfolioList;
-    }
-
-    //getStocksAndSectorsDistribution()
-    //•Få vist fordelinger på aktier og sektorer
-    public List<String> getStocksAndSectorsDistribution() {
-        List<String> stockDistribution = new ArrayList<>();
-
-        for (Transaction transaction : transactions) {
-            if (transaction.getOrder_type().equals("buy")) {
-                int QTY = transaction.getQuantity();
-                StockMarket stock = stockMarketService.getSpecificStock(transaction.getTicker());
-                if (stockDistribution.contains(stock.getTicker())) {
-
-                }
-                stockDistribution.add(stock.getTicker() + " " + stock.getName() + " " + stock.getSector() + " " + String.valueOf(QTY) + " " + "bought");
-            } else if (transaction.getOrder_type().equals("sell")) {
-                int QTY = transaction.getQuantity();
-                StockMarket stock = stockMarketService.getSpecificStock(transaction.getTicker());
-                stockDistribution.add(stock.getTicker() + " " + stock.getName() + " " + stock.getSector() + " " + String.valueOf(QTY) + " " + "sold");
-            }
-        }
-        return stockDistribution;
     }
 
     public List<String> getStocksSectorDistribution() {
@@ -300,16 +253,6 @@ public class TransactionService {
         }
         return stockDistribution;
     }
-
-
-
-
-
-
-
-
-
-
 
     public int getQuantityOfSpecificStockTiedToUser(String ticker) {
         List<Transaction> userTransactions = getUserStocks();

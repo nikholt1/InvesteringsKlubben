@@ -11,15 +11,12 @@ public class UserService {
     private List<User> users;
     private UserRepository userRepository;
 
-    //TODO
-
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
         userRepository.readFile();
         users = userRepository.getUsers();
     }
 
-    // Method to initialize user balance based on transactions and init_cash from CSV
     public double calculateUserCashBalance(int userId, double sumOfTransactions) {
         double userBalance = 0.0;
 
@@ -43,7 +40,6 @@ public class UserService {
         return userPortfolioValue;
     }
 
-    //findUserData()
     public User findUserData(String email) {
         for (User user : users) {
             if (user.getEmail().equals(email)) {
@@ -64,28 +60,6 @@ public class UserService {
         System.out.println("User not found");
         return null;
     }
-
-    // writeNewUserData() -> Admin
-    /*
-    public boolean updateUserCashValue(String email, int value) {
-        try {
-            for (User user : users) {
-                if (user.getEmail().equals(email)) {
-                    userRepository.updateUserCashData(user.getUserID(), value);
-                    users = userRepository.getUsers();
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error in repository update of cash value");
-            e.printStackTrace();
-            return false;
-        }
-        return false;
-
-    }
-
-     */
 
     public boolean writeNewUser(String name, String email, String birthdate) {
         try {
@@ -124,66 +98,6 @@ public class UserService {
         }
     }
 
-    //userDeposit()
-    /*
-    public boolean userDeposit(int userID, double value) {
-        if (value < 0) {
-            System.out.println("Error in deposit: Value must be over 0");
-            return false;
-        }
-        try {
-            return userRepository.depositToAccount(userID, value);
-
-        } catch (Exception e) {
-            System.out.println("Error in deposit");
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-     */
-
-
-
-    /*
-    //userWithdraw()
-    public boolean userWithdraw(int userID, double value) {
-        if (value < 0) {
-            System.out.println("Error in withdrawal: Value must be under 0");
-            return false;
-        }
-        try {
-            return userRepository.withdrawFromAccount(userID, value);
-
-        } catch (Exception e) {
-            System.out.println("Error in withdrawal");
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-     */
-    /*
-    public boolean checkUserCashBalance(int userID, double value) {
-        try {
-            if (calculateUserCashBalance(userID, value)) {
-
-            };
-        } catch (Exception e) {
-            System.out.println("Error in fetching balance");
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-     */
-
-
-
-
-    // sortUsersByCash()
-    //TODO
-    // make comparator for numeric sort
     public boolean sortUsersByCash() {
         try {
             users.sort(new ComparatoruserSortByCash());
@@ -195,7 +109,6 @@ public class UserService {
         }
     }
 
-    // getUserID()
     public int getUserID(String email) {
         for (User user : users) {
             if (user.getEmail().equals(email)) {
@@ -205,8 +118,4 @@ public class UserService {
         System.out.println("User not found in system");
         return -1;
     }
-
-
-
-
 }

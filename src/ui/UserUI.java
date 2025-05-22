@@ -14,7 +14,6 @@ public class UserUI {
     private final UserController userController;
     private int userID = 1;
 
-    // These constants are used to represent negative and positive values, they color strings
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_GREEN = "\u001B[32m";
@@ -149,9 +148,7 @@ public class UserUI {
                 \n
                 """, user.getUserID(), user.getFullName(), user.getEmail(), user.getBirthDate(), cashBalance, valueInAssets, totalPortfolioValue);
     }
-    // Value in assets:    %.2f
-    //
-    //                Total Portfolio value:  %.2f
+
 
     public void viewStockMarket() {
         List<StockMarket> stocks = userController.getStocks();
@@ -197,9 +194,7 @@ public class UserUI {
         System.out.println(choiceQty);
         scanner.nextLine();
 
-
         userController.buyStock(stock, choiceQty);
-
     }
 
     public void sellStock() {

@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 public class User {
 
-
     private int userID;
     private String fullName;
     private String email;
@@ -14,8 +13,6 @@ public class User {
     private LocalDate createdAt;
     private LocalDate updateded;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    //TODO
-
 
     public User(int userID, String fullName, String email, String birthDate, String createdAt, String updateded) {
         this.userID = userID;
@@ -26,7 +23,6 @@ public class User {
         this.createdAt = LocalDate.parse(createdAt, formatter);
         this.updateded = LocalDate.parse(updateded, formatter);
     }
-
 
     @Override
     public String toString() {

@@ -4,9 +4,6 @@ import java.time.LocalDate;
 
 public class Currency {
 
-    //TODO
-
-
     private String base_currency;
     private String quote_Currency;
     private double rate;
@@ -48,30 +45,6 @@ public class Currency {
     public double getRate() {
         return rate;
     }
-
-    public void setRate(double rate) {
-        this.rate = rate;
-    }
-
-    public LocalDate getLast_update() {
-        return Last_update;
-    }
-
-    public void setLast_update(LocalDate last_update) {
-        Last_update = last_update;
-    }
 }
-
-
-/// Constructor
-
-
-    /// Getters
-
-
-
-
-
-    /// toString
 
 

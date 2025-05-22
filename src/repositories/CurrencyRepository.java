@@ -11,14 +11,6 @@ import java.util.Scanner;
 
 public class CurrencyRepository {
 
-    //TODO
-
-    // list<Currency>
-
-    //readList()
-
-    //getCurrency
-
     private List<Currency> currencies;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private final String PATH = "src/repositories/currency.csv";
@@ -33,7 +25,6 @@ public class CurrencyRepository {
             currencies.clear();
         try {
             Scanner reader = new Scanner(new File(PATH));
-            // Skips the header describing the format
             if (reader.hasNextLine()) {
                 reader.nextLine();
             }
@@ -55,7 +46,6 @@ public class CurrencyRepository {
         }
     }
 
-    //getCurrency()
     public Currency findCurrency (String base_currency) {
         readList();
         Currency result = null;
@@ -73,8 +63,4 @@ public class CurrencyRepository {
     public List<Currency> getCurrencies() {
         return currencies;
     }
-
-
-
-
 }

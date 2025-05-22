@@ -6,12 +6,6 @@ import java.util.List;
 
 public class CurrencyService {
 
-    //TODO
-
-    // list<Currency>
-    // getCurrencyRate()
-    // kommunikation til controller
-
     private CurrencyRepository currencyRepository;
     private List<Currency> currencies;
 
@@ -21,7 +15,6 @@ public class CurrencyService {
         currencies = currencyRepository.getCurrencies();
     }
 
-    // getCurrencyRate()
     public double getCurrencyRate (double rate) {
         double foundRate = 0;
         for (Currency currency : currencies) {
@@ -35,8 +28,6 @@ public class CurrencyService {
         return foundRate;
     }
 
-    // currency rate calculation implementation test
-    // returner double data type af værdien i DKK
     public double calculateCurrencyToDKK(double DKKValue, String base_currency) {
         currencyRepository.readList();
         double rate = 0.0;
@@ -46,12 +37,9 @@ public class CurrencyService {
                 break;
             }
         }
-        double result = DKKValue * rate;
-        return result;
+        return DKKValue * rate;
     }
 
-
-    // returner double data type af værdien i base_currency value
     public double calculateCurrencyDKKToCurrency(double DKKValue, String base_currency) {
         currencyRepository.readList();
         double rate = 0.0;
@@ -59,7 +47,6 @@ public class CurrencyService {
             rate = currency.getRate();
             break;
         }
-        double result = DKKValue / rate;
-        return 0.0;
+        return DKKValue / rate;
     }
 }
