@@ -183,11 +183,23 @@ public class UserUI {
     }
 
     public void buyStock() {
-
         viewStockMarket();
-        System.out.println("Which market would you like to buy stock from? Enter here: ");
-        String chosenTicker = scanner.nextLine();
-        StockMarket stock = userController.getSpecificStock(chosenTicker);
+        String chosenTicker;
+        StockMarket stock;
+
+        System.out.println("Which market would you like to buy stock from? Enter ticker here: ");
+
+        while (true) {
+            chosenTicker = scanner.nextLine();
+
+            if (userController.getSpecificStock(chosenTicker.toUpperCase()) != null) {
+                stock = userController.getSpecificStock(chosenTicker.toUpperCase());
+                break;
+            } else {
+                System.out.println("Please try again: ");
+            }
+        }
+
         System.out.println(stock);
         System.out.println("How many stocks would you like to buy? Enter here: ");
         int choiceQty = scanner.nextInt();
@@ -198,16 +210,31 @@ public class UserUI {
 
     public void sellStock() {
         List<Transaction> userStocks = userController.getUserStocks();
-        System.out.println("Your stocks: ");
+        String chosenTicker;
+        StockMarket stock;
+
+        System.out.println("Your transactions: ");
         for (Transaction transaction : userStocks) {
             System.out.println(transaction);
         }
-        System.out.println("Which stock would you like to sell: ");
-        String chosenTicker = scanner.nextLine();
-        StockMarket stock = userController.getSpecificStock(chosenTicker);
-        System.out.println("What amount would you like to sell: ");
-        int choiceQty = scanner.nextInt();
-        scanner.nextLine();
+
+
+        System.out.println("Which stock would you like to sell? Enter ticker here: ");
+
+        while (true) {
+            chosenTicker = scanner.nextLine();
+
+            if (userController.getSpecificStock(chosenTicker.toUpperCase()) != null) {
+                stock = userController.getSpecificStock(chosenTicker.toUpperCase());
+                break;
+            } else {
+                System.out.println("Please try again: ");
+            }
+        }
+        System.out.println(stock);
+        System.out.println("What amount would you like to sell? Enter here: ");
+
+        int choiceQty = HandleIntInput.handleUserInput(scanner);
 
         userController.sellStock(stock, choiceQty);
     }
