@@ -23,3 +23,7 @@ id;user_id;date;ticker;price;currency;order_type;quantity
 22;2;02-03-2025;VWS;200;DKK;sell;50
 23;1;22-05-2025;CHEMM;895.0;DKK;buy;10
 24;1;22-05-2025;CHEMM;895.0;DKK;buy;10
+25;1;22-05-2025;CHEMM;895.0;DKK;buy;10
+26;1;22-05-2025;CHEMM;895.0;DKK;buy;2
+27;1;22-05-2025;CHEMM;895.0;DKK;sell;10
+28;1;22-05-2025;CHEMM;895.0;DKK;sell;10

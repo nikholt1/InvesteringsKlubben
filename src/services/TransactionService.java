@@ -53,7 +53,7 @@ public class TransactionService {
         int userStockQuantity = checkUserStockQuantity(stockMarket, quantity);
 
         if (userStockQuantity < quantity) {
-            System.out.println("not enough stocks");
+            System.out.println("Not enough stocks");
             return false;
         }
         try {
