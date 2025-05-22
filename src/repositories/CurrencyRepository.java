@@ -46,19 +46,7 @@ public class CurrencyRepository {
         }
     }
 
-    public Currency findCurrency (String base_currency) {
-        readList();
-        Currency result = null;
-        for (Currency Currency : currencies) {
-            if(Currency.getBase_currency().equals(base_currency)) {
-                result = Currency;
-            }
-        }
-        if (result == null) {
-            System.out.println("Currency not found");
-        }
-        return result;
-    }
+
 
     public List<Currency> getCurrencies() {
         return currencies;
