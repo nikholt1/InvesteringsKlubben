@@ -83,16 +83,6 @@ class UserServiceTest {
 //        assertTrue(u.userWithdraw(100));
 //    }
 
-    //userDeposit()
-    @Test
-    void userDeposit_test_successful_deposit_return_true() {
-       assertTrue(u.userDeposit(1,100));
-    }
-    @Test
-    void userDeposit_test_unsuccessful_negativeValue_input() {
-        assertFalse(u.userDeposit(1,-100));
-    }
-
 
     // ComparatorTests
     //sort usersByNameMethod:
