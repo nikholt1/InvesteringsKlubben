@@ -84,9 +84,6 @@ public class UserService {
         return users;
     }
 
-    // sortUsersByName() -> andmin eller alle?
-    //TODO
-    // make comparator for alphabetical sort
     public boolean sortUsersByName() {
         try {
             users.sort(new ComparatorsortAlphabetical());

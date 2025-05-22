@@ -192,12 +192,20 @@ public class TransactionService {
         return transactionSum;
     }
 
-
+    /*
     //getRankedUserByPortfolioBaseList() •Kunne få præsenteret en rangliste over hvem der klarer sig bedst
     public List<User> getRankedUserByPortfolioBaseList() {
         List<User> updatedPortfolioList = getAllUserPortfolioData();
         updatedPortfolioList.sort(new ComparatoruserSortByCash());
         return updatedPortfolioList;
+    }
+
+     */
+
+    public List<User> getUserPortfoliosSorted() {
+        List<User> userPortfoliosSorted = userService.getAllUsers();
+        userPortfoliosSorted.sort(new ComparatoruserSortByCash());
+        return userPortfoliosSorted;
     }
 
     public List<String> getStocksSectorDistribution() {
