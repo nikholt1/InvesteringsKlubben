@@ -1,6 +1,7 @@
 package ui;
 
 import controllers.AdminController;
+import controllers.UserController;
 import models.User;
 import utilites.HandleIntInput;
 
@@ -10,6 +11,7 @@ import java.util.Scanner;
 public class AdminUI {
     private final Scanner scanner = new Scanner(System.in);
     private final AdminController adminController;
+    private UserController userController;
 
     public AdminUI(AdminController adminController) {
         this.adminController = adminController;
@@ -59,9 +61,19 @@ public class AdminUI {
     }
 
     public void viewRanking() {
-        List<User> rankUserList = adminController.getRankedUserByPortfolioBaseList();
+        List<User> rankUserList = adminController.getUserPortfoliosSorted();
+        int count = 1;
+        System.out.printf("\n| %-4s | %-22s | %-18s |\n",
+                "Rank", "Full Name", "Portfolio Balance" );
+        System.out.println("------------------------------------------------------");
         for (User user : rankUserList) {
-            System.out.println(user);
+            System.out.printf("| #%-3d | %-22s | %-18s |",
+                    count,
+                    user.getFullName(),
+                    user.getUserPortfolioData()
+                    );
+            count++;
+            System.out.println("\n------------------------------------------------------");
         }
     }
 

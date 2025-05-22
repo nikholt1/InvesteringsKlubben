@@ -53,7 +53,6 @@ public class UserService {
     public User findUserByID(int userID) {
         for (User user : users) {
             if (user.getUserID() == userID) {
-                System.out.println(user);
                 return user;
             }
         }
@@ -84,9 +83,6 @@ public class UserService {
         return users;
     }
 
-    // sortUsersByName() -> andmin eller alle?
-    //TODO
-    // make comparator for alphabetical sort
     public boolean sortUsersByName() {
         try {
             users.sort(new ComparatorsortAlphabetical());

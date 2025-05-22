@@ -1,5 +1,6 @@
 package controllers;
 
+import com.sun.management.UnixOperatingSystemMXBean;
 import models.StockMarket;
 import models.User;
 import repositories.CurrencyRepository;
@@ -25,6 +26,7 @@ public class AdminController {
     private StockMarketService stockMarketService;
     private TransactionService transactionService;
     private UserService userService;
+    private UserController userController;
 
     private AdminUI adminUI;
 
@@ -62,13 +64,14 @@ public class AdminController {
     public List<User> getAllUserPortfolioData() {
         return transactionService.getAllUserPortfolioData();
     }
-
-    public User getUsersDataAndUpdatePortfolioData(int userID) {
-        return transactionService.getUsersDataAndUpdatePortfolioData(userID);
-    }
-
+    /*
     public List<User> getRankedUserByPortfolioBaseList() {
         return transactionService.getRankedUserByPortfolioBaseList();
+    }
+
+     */
+    public List<User> getUserPortfoliosSorted() {
+        return transactionService.getUserPortfoliosSorted();
     }
 
     public List<String> getStocksAndSectorsDistribution() {

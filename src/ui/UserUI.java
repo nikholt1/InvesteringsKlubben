@@ -191,7 +191,6 @@ public class UserUI {
         System.out.println(stock);
         System.out.println("How many stocks would you like to buy? Enter here: ");
         int choiceQty = scanner.nextInt();
-        System.out.println(choiceQty);
         scanner.nextLine();
 
         userController.buyStock(stock, choiceQty);

@@ -30,18 +30,20 @@ public class StockMarket {
 
     @Override
     public String toString() {
-        return "StockMarket{" +
-                "ticker='" + ticker + '\'' +
-                ", name='" + name + '\'' +
-                ", sector='" + sector + '\'' +
-                ", price=" + price +
-                ", currency=" + currency +
-                ", rating='" + rating + '\'' +
-                ", dividend_yield=" + dividend_yield +
-                ", market='" + market + '\'' +
-                ", LastUpdate=" + lastUpdate +
-                '}';
+        return """
+                Ticker:     %s
+                Name:       %s
+                Sector:     %s
+                Price:      %.2f
+                Currency:   %s
+                Rating:     %s
+                Dividend:   %.2f
+                Market:     %s
+                
+                (Last Updated:   %s)
+                """.formatted(ticker, name, sector, price, currency, rating, dividend_yield, market, lastUpdate);
     }
+
 
     public String getTicker() {
         return ticker;
