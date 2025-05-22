@@ -34,7 +34,6 @@ public class UserController {
 
     private int userID;
     private User user;
-
     public UserController(String email) {
         this.stockMarketRepository = new StockMarketRepository();
         this.currencyRepository = new CurrencyRepository();
@@ -54,6 +53,9 @@ public class UserController {
     public void start(String email) {
         this.userID = getUserID(email);
         user = userService.findUserData(email);
+        user.setUserPortfolioData(fetchUserPortfolioValue(userID));
+        user.setUserAssetData(fetchUserAssetValue(userID));
+        user.setCashAvailableData(fetchUserBalance(userID));
         userUI.start();
     }
 

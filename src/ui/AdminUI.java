@@ -14,7 +14,7 @@ public class AdminUI {
     private UserController userController;
 
     public AdminUI(AdminController adminController) {
-        this.adminController = adminController
+        this.adminController = adminController;
     }
 
     public void start() {
@@ -70,7 +70,7 @@ public class AdminUI {
             System.out.printf("| #%-3d | %-22s | %-18s |",
                     count,
                     user.getFullName(),
-                    userController.fetchUserPortfolioValue(user.getUserID())
+                    user.getUserPortfolioData()
                     );
             count++;
             System.out.println("\n------------------------------------------------------");

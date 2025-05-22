@@ -13,6 +13,9 @@ public class User {
     private LocalDate createdAt;
     private LocalDate updateded;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private double userPortfolioData = 0.0;
+    private double userAssetData = 0.0;
+    private double cashAvailableData = 0.0;
 
     public User(int userID, String fullName, String email, String birthDate, String createdAt, String updateded) {
         this.userID = userID;
@@ -35,6 +38,25 @@ public class User {
                 ", createdAt=" + createdAt +
                 ", updateded=" + updateded +
                 '}';
+    }
+    public double getUserPortfolioData() {
+        return userPortfolioData;
+    }
+    public double getUserAssetData() {
+        return userAssetData;
+    }
+    public double getCashAvailableData() {
+        return cashAvailableData;
+    }
+
+    public void setUserPortfolioData(double value) {
+        this.userPortfolioData = value;
+    }
+    public void setUserAssetData(double value) {
+        this.userAssetData = value;
+    }
+    public void setCashAvailableData(double value) {
+        this.cashAvailableData = value;
     }
 
     public int getUserID() {

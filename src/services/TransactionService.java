@@ -204,6 +204,9 @@ public class TransactionService {
 
     public List<User> getUserPortfoliosSorted() {
         List<User> userPortfoliosSorted = userService.getAllUsers();
+        for (User user : userPortfoliosSorted) {
+            user.setUserPortfolioData(getUserAssetValue(user.getUserID()) + + userService.calculateUserCashBalance(user.getUserID(), calculateSumOfTransactions(user.getUserID())));
+        }
         userPortfoliosSorted.sort(new ComparatoruserSortByCash());
         return userPortfoliosSorted;
     }
