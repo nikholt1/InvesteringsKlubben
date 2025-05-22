@@ -35,16 +35,6 @@ public class UserController {
     private int userID;
     private User user;
 
-//    public UserController(int userID, CurrencyService currencyService,
-//                          StockMarketService stockMarketService,
-//                          TransactionService transactionService,
-//                          UserService userService) {
-//        this.userID = userID;
-//        this.currencyService = currencyService;
-//        this.stockMarketService = stockMarketService;
-//        this.transactionService = transactionService;
-//        this.userService = userService;
-//    }
     public UserController(String email) {
         this.stockMarketRepository = new StockMarketRepository();
         this.currencyRepository = new CurrencyRepository();
@@ -59,25 +49,14 @@ public class UserController {
 
 
         this.userUI = new UserUI(this);
-
-
     }
 
-
-
-    /// start method()
     public void start(String email) {
         this.userID = getUserID(email);
         user = userService.findUserData(email);
         userUI.start();
     }
 
-    public void start(User user) {
-        this.user = user;
-    }
-
-
-    // fetch currencyService Data
     public double getCurrencyByRate(double rate) {
         return currencyService.getCurrencyRate(rate);
     }
@@ -90,35 +69,26 @@ public class UserController {
         return currencyService.calculateCurrencyDKKToCurrency(DKKValue, base_currency);
     }
 
-    // fetch transactionService Data
-
     public void buyStock(StockMarket stockMarket, int quantity) {
-        boolean failCheck = transactionService.buyStock(stockMarket, quantity);
+        boolean failCheck = transactionService.buyStock(stockMarket, quantity, fetchUserBalance(userID));
         if (failCheck) {
             System.out.println("Success buy stock");
         } else {
             System.out.println("Failed buy stock");
         }
-
     }
+
     public void sellStock(StockMarket stockMarket, int quantity) {
         transactionService.sellStock(stockMarket, quantity);
     }
 
-    public void viewUserTransactionHistory() {
-//        transactionService.viewUserTransactionHistory();
-    }
     public List<Transaction> getUserStocks() {
         return transactionService.getUserStocksByID(userID);
     }
     public int getQuantityOfSpecificStockTiedToUser(String ticker) {
-//        return transactionService.getQuantityOfSpecificStockTiedToUser(ticker);
         return -1;
     }
 
-
-
-    // fetch stockMarketService Data
     public String getTicker(String ticker) {
         return stockMarketService.getTicker(ticker);
     }
@@ -139,37 +109,24 @@ public class UserController {
         return stockMarketService.getSpecificStock(ticker);
     }
 
-
-
-
-
-
-    // fetch userService Data
     public User findUserData() {
         String email = user.getEmail();
         return userService.findUserData(email);
     }
-    public boolean updateUserCashValue(String email, int value) {
-        return userService.updateUserCashValue(email, value);
-    }
-                                    /// springer writeNewUser over, fordi det kun er admin privilege
 
-    public boolean userWithdraw(double value) {
-        return userService.userWithdraw(userID, value);
+    public double fetchUserAssetValue(int userID) {
+        return transactionService.getUserAssetValue(userID);
     }
 
-    public boolean checkUserCashBalance(double value) {
-        return userService.checkUserCashBalance(userID, value);
+    public double fetchUserBalance(int userID) {
+        return userService.calculateUserCashBalance(userID, transactionService.calculateSumOfTransactions(userID));
     }
 
+    public double fetchUserPortfolioValue(int userID) {
+        return fetchUserAssetValue(userID) + fetchUserBalance(userID);
+    }
 
     public int getUserID(String email) {
-        return userService.getUserID(email);              /// måske redundant
+        return userService.getUserID(email);
     }
-
-    /// implement navigation functionality between service class and UI
-    /// switch call methods from services.
-
-
-
 }

@@ -10,15 +10,12 @@ public class StockMarketService {
     private StockMarketRepository stockMarketRepository;
     private List<StockMarket> stockMarkets;
 
-    //TODO
     public StockMarketService(StockMarketRepository stockMarketRepository) {
         this.stockMarketRepository = stockMarketRepository;
         stockMarketRepository.readList();
         stockMarkets = stockMarketRepository.getStockMarkets();
     }
 
-
-    // getStockMarket()
     public StockMarketRepository getStockMarketRepository() {
         return stockMarketRepository;
     }
@@ -38,8 +35,6 @@ public class StockMarketService {
         System.out.println("Stock not found");
         return null;
     }
-
-    // getTicker()
     public String getTicker(String ticker) {
         String foundTicker = " ";
         for (StockMarket stockMarket : stockMarkets) {
@@ -52,7 +47,6 @@ public class StockMarketService {
         return null;
     }
 
-    // getPrice()
     public double getPrice(Double price) {
         double foundPrice = 0;
         for (StockMarket stockMarket : stockMarkets) {
@@ -64,7 +58,6 @@ public class StockMarketService {
         return foundPrice;
     }
 
-    // getCurrency()
     public String getCurrency() {
         String foundCurrency = " ";
         for (StockMarket stockMarket : stockMarkets) {
@@ -72,5 +65,4 @@ public class StockMarketService {
         }
         return foundCurrency;
     }
-
 }

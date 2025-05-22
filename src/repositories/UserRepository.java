@@ -17,16 +17,12 @@ public class UserRepository {
     private  List<User> users;
     private final String PATH = "src/repositories/users.csv";
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    //TODO
 
     public UserRepository() {
         this.users = new ArrayList<>();
         readFile();
     }
 
-    //List<User>
-
-    // readFile()
     public void readFile() {
         users.clear();
         try {
@@ -42,10 +38,11 @@ public class UserRepository {
                 String fullName = lineScanner.next();
                 String email = lineScanner.next();
                 String birthDate = lineScanner.next();
-                double initialCash = Double.parseDouble(lineScanner.next());
+                lineScanner.next();
                 String createdAt = lineScanner.next();
                 String lastUpdated = lineScanner.next();
-                users.add(new User(userID, fullName, email, birthDate, initialCash, createdAt, lastUpdated));
+
+                users.add(new User(userID, fullName, email, birthDate, createdAt, lastUpdated));
             }
             reader.close();
         } catch (IOException e) {
@@ -53,8 +50,8 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
-    // writeToFile()
-    public void writeNewUserToFile(String name, String email, double balance, String birthDate) {
+
+    public void writeNewUserToFile(String name, String email, String birthDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         try {
@@ -75,7 +72,7 @@ public class UserRepository {
             String formattedUpdated = updated.format(formatter);
 
             String formattedLine = newID + ";" + name + ";" + email + ";" +
-                    formattedBirthDate + ";" + balance + ";" +
+                    formattedBirthDate + ";" + 100_000 + ";" +
                     formattedCreated + ";" + formattedUpdated + "\n";
             writer.write(formattedLine);
             writer.close();
@@ -86,145 +83,8 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
-    //depositByUserID()
-    public boolean depositToAccount(int userID, double value) {
-        readFile();
-        System.out.println(userID);
-        boolean userFound = false;
-        for (User user : users) {
-            if (user.getUserID() == userID) {
-                System.out.println("found " + user);
-                double userCurrentValue = user.getBalance();
-                user.setBalance(userCurrentValue + value);
-                System.out.println("updated user cash with" + user.getBalance());
-                user.setUpdateded(LocalDate.now());
-                break;
-            } else {
-                System.out.println("Error in UserRepository.depositByUserID: User not found");
-                return false;
-            }
-        }
-        try {
-            Writer writer = new FileWriter(PATH);
-            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated\n");
-            for (User user : users) {
-//                System.out.println(user);
-                String formatted = user.getUserID() + ";" +
-                        user.getFullName() + ";" +
-                        user.getEmail() + ";" +
-                        user.getBirthDate().format(formatter) + ";" +
-                        user.getBalance() + ";" +
-                        user.getCreatedAt().format(formatter) + ";" +
-                        user.getUpdateded().format(formatter) + "\n";
-                writer.write(formatted);
-            }
-            writer.close();
-            readFile();
-            return true;
-        } catch (IOException e) {
-            System.out.println("Error in UserRepository.depositByUserID");
-            e.printStackTrace();
-            return false;
-        }
-
-    }
-
-    //checkAccountCashBalance();
-    public boolean checkAccountCashBalance(int userID, double value) {
-        for(User user : users) {
-            if (user.getUserID() == userID) {
-                if (user.getBalance() < value) {
-                    System.out.println("Insufficient funds");
-                    return false;
-                } else {
-                    System.out.println(user.getBalance() + " Acceptable value");
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    //withdrawByUserID()
-    public boolean withdrawFromAccount(int userID, double value) {
-        for (User user : users) {
-
-            if (user.getUserID() == userID) {
-                System.out.println("Found " + user + "in repository" );
-                if (!checkAccountCashBalance(userID, value)) {
-                    System.out.println("Insufficient funds");
-                    return false;
-                } else {
-                    double userCurrentValue = user.getBalance();
-                    user.setBalance(userCurrentValue - value);
-                    System.out.println("Account balance updated to: " + user.getBalance());
-                    user.setUpdateded(LocalDate.now());
-                }
-
-            }
-        }
-        try {
-            Writer writer = new FileWriter(PATH);
-            writer.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated\n");
-            for (User user : users) {
-//                System.out.println(user);
-                String formatted = user.getUserID() + ";" +
-                        user.getFullName() + ";" +
-                        user.getEmail() + ";" +
-                        user.getBirthDate().format(formatter) + ";" +
-                        user.getBalance() + ";" +
-                        user.getCreatedAt().format(formatter) + ";" +
-                        user.getUpdateded().format(formatter) + "\n";
-                writer.write(formatted);
-            }
-            writer.close();
-            return true;
-        } catch (IOException e) {
-            System.out.println("Error in withdraw");
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-
-
-
-    public void updateUserCashData(int userID, int value) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        for (User user : users) {
-            if (user.getUserID() == userID) {
-                double userCash = user.getBalance();
-                user.setBalance(userCash += value);
-                user.setUpdateded(LocalDate.now());
-            }
-        }
-        try {
-            FileWriter writer = new FileWriter(PATH);
-
-            for (User user : users) {
-                String formatted = user.getUserID() + ";" +
-                        user.getFullName() + ";" +
-                        user.getEmail() + ";" +
-                        user.getBirthDate().format(formatter) + ";" +
-                        user.getBalance() + ";" +
-                        user.getCreatedAt().format(formatter) + ";" +
-                        user.getUpdateded().format(formatter) + "\n";
-                writer.write(formatted);
-            }
-
-            writer.close();
-            readFile();
-        } catch (IOException e) {
-            System.out.println("File not found or could not be written to");
-            e.printStackTrace();
-        }
-    }
 
     public List<User> getUsers() {
         return users;
     }
-
-
 }
