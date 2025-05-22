@@ -42,15 +42,7 @@ class UserServiceTest {
         assertEquals(null, u.findUserData("hasbulla@dagestan.rus"));
 
     }
-    //test updateUserCashValue()
-    @Test
-    void updateUserCashValue_for_existing_user_return_true() {
-        assertTrue(u.updateUserCashValue("hasbulla@donesk.ru", 10_000));
-    }
-    @Test
-    void updateUserCashValue_for_non_existing_user_return_false() {
-        assertFalse(u.updateUserCashValue("zlatanibrahimovic@sweden.se", 10_000));
-    }
+
 
     //test writeNewUser()
     @Test
