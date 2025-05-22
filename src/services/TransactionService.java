@@ -156,7 +156,7 @@ public class TransactionService {
         return userPortfoliosSorted;
     }
 
-    public List<String> getStocksSectorDistribution() {
+    public List<String> getStocksDistribution() {
         List<StockMarket> stockMarkets = stockMarketService.getStocks();
         List<String> stockDistribution = new ArrayList<>();
         String sector = " ";
@@ -175,8 +175,19 @@ public class TransactionService {
                 }
             }
             sum = stockMarket.getPrice() * QTY;
-            stockDistribution.add("Stock = " + stockMarket.getTicker() + " Quantity = " + QTY + " Standing volume = " + sum );
+            stockDistribution.add(String.format("%-10s | %-8d | %10f", stockMarket.getTicker(), QTY, sum));
+
         }
+
+        return stockDistribution;
+    }
+    public List<String> getSectorDistribution() {
+        List<StockMarket> stockMarkets = stockMarketService.getStocks();
+        List<String> stockDistribution = new ArrayList<>();
+        String sector = " ";
+        String ticker = " ";
+        int QTY = 0;
+        double sum = 0.0;
         List<String> processedSectors = new ArrayList<>();
         for (StockMarket stockMarket : stockMarkets) {
             sector = stockMarket.getSector();
@@ -205,7 +216,7 @@ public class TransactionService {
                 }
             }
 
-            stockDistribution.add("Sector: " + sector + " Quantity = " + QTY + " Standing volume = " + sum );
+            stockDistribution.add(String.format("%-17s | %-10d | %10f", sector, QTY, sum));
         }
         return stockDistribution;
     }

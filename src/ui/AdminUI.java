@@ -54,10 +54,35 @@ public class AdminUI {
 
 
     public void viewStocksAndSectors() {
-        List<String> stocksAndSectors = adminController.getStocksAndSectorsDistribution();
-        for (String string : stocksAndSectors) {
+        List<String> stocks = adminController.getStocksAndDistribution();
+        System.out.println("""
+                           -------------------
+                          |      STOCKS       |
+                           ------------------- """);
+
+        System.out.printf("\n| %-8s | %-8s | %-8s |\n",
+                "Ticker", "Quantity", "Standing Volume" );
+        System.out.println("------------------------------------------------------");
+        for (String string : stocks) {
             System.out.println(string);
         }
+
+        System.out.println("------------------------------------------------------");
+        List<String> sector = adminController.getSectorDistribution();
+        System.out.println("""
+                       
+                       
+                           -------------------
+                          |      SECTORS      |
+                           ------------------- """);
+
+        System.out.printf("\n| %-15s | %-10s | %-10s |\n",
+                "Sector", "Quantity", "Standing Volume" );
+        System.out.println("------------------------------------------------------");
+        for (String string : sector) {
+            System.out.println(string);
+        }
+
     }
 
     public void viewRanking() {

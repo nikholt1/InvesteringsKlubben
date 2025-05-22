@@ -61,7 +61,10 @@ public class AdminController {
         return transactionService.getUserPortfoliosSorted();
     }
 
-    public List<String> getStocksAndSectorsDistribution() {
-        return transactionService.getStocksSectorDistribution();
+    public List<String> getStocksAndDistribution() {
+        return transactionService.getStocksDistribution();
+    }
+    public List<String> getSectorDistribution() {
+        return transactionService.getSectorDistribution();
     }
 }
