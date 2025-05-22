@@ -16,10 +16,6 @@ import java.util.List;
 
 public class AdminController {
 
-
-    //TODO
-    /// add attributes, Constructor getters and setters
-
     private StockMarketRepository stockMarketRepository;
     private CurrencyRepository currencyRepository;
     private TransactionRepository transactionRepository;
@@ -45,38 +41,23 @@ public class AdminController {
         this.userService = new UserService(userRepository);
 
         this.adminUI = new AdminUI(this);
-
     }
 
     public List<StockMarket> getStocks() {
         return stockMarketService.getStocks();
     }
 
-    /// start method()
     public void start() {
         adminUI.start();
     }
-
-    /*
-    Klubbens lederskal:
-•Kunne se en samlet oversigt over alle brugeres porteføljeværdi
-•Kunne få præsenteret en rangliste over hvem der klarer sig bedst
-•Få vist fordelinger på aktier og sektorer
-    */
 
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    public boolean writeNewUsers(String name, String email, double balance, String birthDate) {
-        return userService.writeNewUser(name, email, balance, birthDate);
-                //11;King of Mauretania;atlas@northAfrica.ly;04-08-1997;10000.0;06-05-2025;06-05-2025;
+    public boolean writeNewUsers(String name, String email, String birthDate) {
+        return userService.writeNewUser(name, email, birthDate);
     }
-
-
-
-
-    /// implement navigation functionality between service class and UI
 
     public List<User> getAllUserPortfolioData() {
         return transactionService.getAllUserPortfolioData();
@@ -93,10 +74,4 @@ public class AdminController {
     public List<String> getStocksAndSectorsDistribution() {
         return transactionService.getStocksSectorDistribution();
     }
-
-    /// switch call methods from services.
-
-
-    ///
-
 }

@@ -5,28 +5,24 @@ import java.time.format.DateTimeFormatter;
 
 public class User {
 
-
     private int userID;
     private String fullName;
     private String email;
     private LocalDate birthDate;
-    private double balance;
+    private final double INIT_CASH;
     private LocalDate createdAt;
     private LocalDate updateded;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    //TODO
 
-
-    public User(int userID, String fullName, String email, String birthDate, double initCash, String createdAt, String updateded) {
+    public User(int userID, String fullName, String email, String birthDate, String createdAt, String updateded) {
         this.userID = userID;
         this.fullName = fullName;
         this.email = email;
         this.birthDate = LocalDate.parse(birthDate, formatter);
-        this.balance = initCash;
+        this.INIT_CASH = 100_000;
         this.createdAt = LocalDate.parse(createdAt, formatter);
         this.updateded = LocalDate.parse(updateded, formatter);
     }
-
 
     @Override
     public String toString() {
@@ -35,7 +31,7 @@ public class User {
                 ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", birthDate=" + birthDate +
-                ", initCash=" + balance +
+                ", initCash=" + INIT_CASH +
                 ", createdAt=" + createdAt +
                 ", updateded=" + updateded +
                 '}';
@@ -73,12 +69,8 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public double getINIT_CASH() {
+        return INIT_CASH;
     }
 
     public LocalDate getCreatedAt() {
@@ -96,18 +88,4 @@ public class User {
     public void setUpdateded(LocalDate updateded) {
         this.updateded = updateded;
     }
-
-
-    /// Attributes
-
-    /// Constructor
-
-
-    /// Getters
-
-
-    /// Setters
-
-
-    /// toString
 }

@@ -26,7 +26,6 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final int userId;
 
-
     public TransactionService(TransactionRepository transactionRepository, int userId) {
         this.transactionRepository = transactionRepository;
         transactionRepository.readList();
@@ -34,14 +33,14 @@ public class TransactionService {
         this.userId = userId;
     }
 
-    public boolean buyStock(StockMarket stockMarket, int quantity) {
+    public boolean buyStock(StockMarket stockMarket, int quantity, double cashBalance) {
         double price = stockMarket.getPrice();
         double sum = price * quantity;
         double convertedSum = currencyService.calculateCurrencyToDKK(sum, stockMarket.getCurrency());
 
-        if (userService.checkUserCashBalance(userId, convertedSum)) {
+        if (cashBalance >= convertedSum) {
             if (writeTransactionToTransactionRepository(stockMarket, "buy", quantity)) {
-                return userService.userWithdraw(userId, convertedSum);
+                return true;
             }
         }
         return false;
@@ -50,21 +49,15 @@ public class TransactionService {
     public boolean sellStock(StockMarket stockMarket, int quantity) {
         double stockValue = stockMarket.getPrice();
         double saleValue = stockValue * quantity;
-        double convertedSaleValue = currencyService.calculateCurrencyToDKK(saleValue, stockMarket.getCurrency());
-
 
         int userStockQuantity = checkUserStockQuantity(stockMarket, quantity);
-//        if (getQuantityOfSpecificStockTiedToUser(stockMarket.getTicker()) < quantity) {
-//            System.out.println("You do not have enough stocks in " + stockMarket.getTicker());
-//            return false;
-//        }
+
         if (userStockQuantity < quantity) {
             System.out.println("not enough stocks");
             return false;
         }
         try {
             if (writeTransactionToTransactionRepository(stockMarket, "sell", quantity)) {
-                userService.userDeposit(userId, convertedSaleValue);
                 return true;
             }
         } catch (Exception e) {
@@ -121,6 +114,7 @@ public class TransactionService {
         }
         return userTransactions;
     }
+
     public List<Transaction> getUserStocksByID(int userID) {
         List<Transaction> userTransactions = new ArrayList<>();
 
@@ -132,87 +126,78 @@ public class TransactionService {
         return userTransactions;
     }
 
-    //getAllUsersPortfolioData() •Kunne se en samlet oversigt over alle brugeres porteføljeværdi
     public List<User> getAllUserPortfolioData() {
         List<User> updatedPortfolioList = new ArrayList<>();
         List<User> AllUsers = userService.getAllUsers();
         int count = 0;
         for (User user : AllUsers) {
-            updatedPortfolioList.add(getUserPortfolioData(count));
+            updatedPortfolioList.add(getUsersDataAndUpdatePortfolioData(count));
             count++;
         }
         return updatedPortfolioList;
     }
 
-    //getUsersDataAndUpdatePortfolioData()
     public User getUsersDataAndUpdatePortfolioData(int userID) {
         User user = userService.findUserByID(userID);
-        List<Transaction> usersTransactions = getUserStocksByID(user.getUserID());
+        List<Transaction> usersTransactions = getUserStocksByID(userID);
         double transactionsSum = 0.0;
         for (Transaction transaction : usersTransactions) {
             int QTY = transaction.getQuantity();
             String ticker = transaction.getTicker();
             StockMarket stock = stockMarketService.getSpecificStock(ticker);
             double priceOverQTY = stock.getPrice() * QTY;
-            double userBalance = user.getBalance();
-
-            user.setBalance(userBalance + priceOverQTY);
-
+            double userBalance = user.getINIT_CASH();
+            System.out.println(userBalance);
+            // user.setInitCash(userBalance + priceOverQTY);
         }
         return user;
     }
 
-    public User getUserPortfolioData(int userId) {
+    public double getUserAssetValue(int userId) {
         User user = userService.findUserByID(userId);
         List<Transaction> userTransactions = getUserStocksByID(user.getUserID());
 
+        double stockValue = 0.0;
+
         for (Transaction transaction : userTransactions) {
-            int stockQuantity = transaction.getQuantity();
-            String ticker = transaction.getTicker();
-            StockMarket stock = stockMarketService.getSpecificStock(ticker);
-            double transactionValue = 0.0;
-            double userBalance = user.getBalance();
 
             if (transaction.getOrder_type().equals("buy")) {
-                transactionValue = stock.getPrice() * stockQuantity;
+                stockValue += stockMarketService.getSpecificStock(transaction.getTicker()).getPrice() * transaction.getQuantity();
             }
 
             if (transaction.getOrder_type().equals("sell")) {
-                transactionValue = transaction.getPrice() * stockQuantity;
+                stockValue -= stockMarketService.getSpecificStock(transaction.getTicker()).getPrice() * transaction.getQuantity();
+            }
+        }
+        return stockValue;
+    }
+
+
+    public double calculateSumOfTransactions(int userId) {
+        List<Transaction> userTransactions = getUserStocksByID(userId);
+
+        double transactionSum = 0.0;
+
+        for (Transaction transaction : userTransactions) {
+            int quantity = transaction.getQuantity();
+
+            if (transaction.getOrder_type().equals("buy")) {
+                transactionSum -= transaction.getPrice() * quantity;
             }
 
-            user.setBalance(transactionValue + userBalance);
+            if (transaction.getOrder_type().equals("sell")) {
+                transactionSum += transaction.getPrice() * quantity;
+            }
         }
-        return user;
+        return transactionSum;
     }
+
 
     //getRankedUserByPortfolioBaseList() •Kunne få præsenteret en rangliste over hvem der klarer sig bedst
     public List<User> getRankedUserByPortfolioBaseList() {
         List<User> updatedPortfolioList = getAllUserPortfolioData();
         updatedPortfolioList.sort(new ComparatoruserSortByCash());
         return updatedPortfolioList;
-    }
-
-    //getStocksAndSectorsDistribution()
-    //•Få vist fordelinger på aktier og sektorer
-    public List<String> getStocksAndSectorsDistribution() {
-        List<String> stockDistribution = new ArrayList<>();
-
-        for (Transaction transaction : transactions) {
-            if (transaction.getOrder_type().equals("buy")) {
-                int QTY = transaction.getQuantity();
-                StockMarket stock = stockMarketService.getSpecificStock(transaction.getTicker());
-                if (stockDistribution.contains(stock.getTicker())) {
-
-                }
-                stockDistribution.add(stock.getTicker() + " " + stock.getName() + " " + stock.getSector() + " " + String.valueOf(QTY) + " " + "bought");
-            } else if (transaction.getOrder_type().equals("sell")) {
-                int QTY = transaction.getQuantity();
-                StockMarket stock = stockMarketService.getSpecificStock(transaction.getTicker());
-                stockDistribution.add(stock.getTicker() + " " + stock.getName() + " " + stock.getSector() + " " + String.valueOf(QTY) + " " + "sold");
-            }
-        }
-        return stockDistribution;
     }
 
     public List<String> getStocksSectorDistribution() {
@@ -268,16 +253,6 @@ public class TransactionService {
         }
         return stockDistribution;
     }
-
-
-
-
-
-
-
-
-
-
 
     public int getQuantityOfSpecificStockTiedToUser(String ticker) {
         List<Transaction> userTransactions = getUserStocks();

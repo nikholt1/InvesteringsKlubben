@@ -1,8 +1,6 @@
 package ui;
 
 import controllers.AdminController;
-import controllers.UserController;
-import models.StockMarket;
 import models.User;
 import utilites.HandleIntInput;
 
@@ -82,10 +80,11 @@ public class AdminUI {
         String name = scanner.nextLine();
         System.out.println("Enter email");
         String email = scanner.nextLine();
-        double balance = 100000;
+        // double balance = 100000;
         System.out.println("Write your birthday in this format DD-MM-YYYY");
         String birthDate = scanner.nextLine();
-        boolean tjek = adminController.writeNewUsers(name,email,balance,birthDate);
+        //boolean tjek = adminController.writeNewUsers(name,email,balance,birthDate);
+        boolean tjek = adminController.writeNewUsers(name,email,birthDate);
         if (tjek) {
             System.out.println("User created");
         } else {

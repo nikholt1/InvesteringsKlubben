@@ -21,3 +21,4 @@ id;user_id;date;ticker;price;currency;order_type;quantity
 20;10;12-03-2025;SIM;708;DKK;buy;7
 21;1;01-03-2025;NOVO-B;715;DKK;sell;20
 22;2;02-03-2025;VWS;200;DKK;sell;50
+23;1;22-05-2025;CHEMM;895.0;DKK;buy;10

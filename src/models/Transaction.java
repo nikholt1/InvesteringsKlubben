@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 public class Transaction {
 
-    //TODO
     private int id;
     private int userId;
     private LocalDate localDate;
@@ -15,8 +14,6 @@ public class Transaction {
     private String order_type;
     private int quantity;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-
 
     public Transaction(int id, int userId, String localDate, String ticker, double price, String currency, String order_type, int quantity) {
         this.id = id;

@@ -26,7 +26,7 @@ public class TransactionRepository {
         transactions.clear();
         try {
             Scanner reader = new Scanner(new File(PATH));
-            // Skips the header describing the format
+
             if (reader.hasNextLine()) {
                 reader.nextLine();
             }
@@ -48,7 +48,6 @@ public class TransactionRepository {
                 int quantity = Integer.parseInt(lineScanner.next());
 
                 transactions.add(new Transaction(id, userId, localDate, ticker, price, currency, order_type, quantity));
-
             }
             reader.close();
         } catch (IOException e) {
@@ -65,6 +64,7 @@ public class TransactionRepository {
             for (Transaction transaction : transactions) {
                 ID++;
             }
+
             int newID = ID + 1;
             LocalDate createdDate = LocalDate.now();
             String formattedCreatedDate = createdDate.format(formatter);

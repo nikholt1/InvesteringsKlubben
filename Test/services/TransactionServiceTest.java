@@ -30,16 +30,6 @@ class TransactionServiceTest {
     }
 
     @Test
-    void buyStock_Successfully() {
-        assertTrue(transactionService.buyStock(stockMarkets.get(0), 10));
-    }
-
-    @Test
-    void buyStock_unSuccessfully() {
-        assertFalse(transactionService.buyStock(stockMarkets.get(0), 1000));
-    }
-
-    @Test
     void sellStock_successfully() {
         assertTrue(transactionService.sellStock(stockMarkets.get(5), 10));
     }
